@@ -30,7 +30,7 @@ Code propre et découpé en responsabilités claires :
 ### Icône dans la barre de menus
 
 - Un verre dessiné en code qui se remplit selon le pourcentage de l'objectif (au moins 8 niveaux : vide → plein).
-- Image en mode « template » pour s'adapter automatiquement au thème clair/sombre.
+- Eau en bleu ; l'image n'est donc pas en mode « template » : le contour est coloré selon l'apparence de la barre (foncé sur barre claire, blanc sur barre sombre).
 - À côté de l'icône, texte optionnel : « 1,2 / 2 L » ou « 60 % » (choix dans les réglages, ou icône seule).
 - Si ça fait longtemps que rien n'a été bu (même délai que le rappel d'inactivité), l'icône passe en état « alerte » (petite goutte ou teinte orange) : rappel discret sans notification.
 
