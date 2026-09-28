@@ -11,7 +11,7 @@ enum Theme {
                                               startPoint: .leading, endPoint: .trailing)
 
     /// Voile bleu très léger et uniforme, commun au menu et aux réglages.
-    static let tint = water.opacity(0.12)
+    static let tint = water.opacity(0.18)
 }
 
 /// Fond « verre bleuté » : flou de ce qui est derrière la fenêtre + voile bleu très léger.
@@ -39,16 +39,6 @@ private struct VisualEffectBackground: NSViewRepresentable {
     func updateNSView(_ nsView: NSVisualEffectView, context: Context) {}
 }
 
-extension View {
-    /// Habillage d'un formulaire de réglages : fond transparent (le verre bleuté de la fenêtre
-    /// passe dessous), contenu collé en haut et contrôles bleus.
-    func waterFormStyle() -> some View {
-        self
-            .formStyle(.grouped)
-            .scrollContentBackground(.hidden)
-            .tint(Theme.water)
-    }
-}
 
 /// Jauge de progression bleue, en dégradé.
 struct WaterProgressBar: View {

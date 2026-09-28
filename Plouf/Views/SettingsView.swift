@@ -1,5 +1,137 @@
 import SwiftUI
 
+/// Fenêtre des réglages : onglets maison en haut, puis cartes en verre sur un fond bleu uniforme.
+/// Tout est dessiné en SwiftUI (pas de barre d'outils ni de `Form` système) pour que
+/// le fond soit le même partout, comme dans le menu.
+struct SettingsView: View {
+    @ObservedObject var settings: AppSettings
+
+    private enum Tab: Hashable {
+        case general
+        case glasses
+    }
+
+    @State private var tab: Tab = .general
+
+    var body: some View {
+        VStack(spacing: 0) {
+            tabBar
+                .padding(.top, 34)   // place pour les boutons rouge / orange / vert
+                .padding(.bottom, 10)
+
+            ScrollView {
+                Group {
+                    switch tab {
+                    case .general:
+                        GeneralSettingsView(settings: settings)
+                    case .glasses:
+                        GlassesSettingsView(settings: settings)
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 20)
+            }
+        }
+        .frame(width: 460, height: 540)
+        .background(GlassBackground())
+        .tint(Theme.water)
+    }
+
+    private var tabBar: some View {
+        HStack(spacing: 8) {
+            TabButton(title: "Général", isSelected: tab == .general) {
+                Image(systemName: "gearshape")
+            } action: { tab = .general }
+            TabButton(title: "Verres", isSelected: tab == .glasses) {
+                Image(nsImage: GlassIconRenderer.templateGlass)
+            } action: { tab = .glasses }
+        }
+    }
+}
+
+/// Bouton d'onglet : icône + titre, sur une pastille bleutée quand il est sélectionné.
+private struct TabButton<Icon: View>: View {
+    let title: LocalizedStringKey
+    let isSelected: Bool
+    @ViewBuilder let icon: Icon
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 3) {
+                icon
+                    .font(.system(size: 17))
+                    .frame(height: 20)
+                Text(title)
+                    .font(.caption)
+            }
+            .foregroundStyle(isSelected ? Theme.waterLight : Color.secondary)
+            .frame(width: 72, height: 50)
+            .background {
+                if isSelected {
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(Theme.water.opacity(0.22))
+                }
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Éléments communs
+
+/// Carte en verre qui regroupe des réglages, avec un titre au-dessus.
+private struct GlassCard<Content: View>: View {
+    let title: LocalizedStringKey?
+    @ViewBuilder let content: Content
+
+    init(_ title: LocalizedStringKey? = nil, @ViewBuilder content: () -> Content) {
+        self.title = title
+        self.content = content()
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if let title {
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .padding(.leading, 4)
+            }
+            VStack(alignment: .leading, spacing: 12) {
+                content
+            }
+            .padding(14)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(Color.primary.opacity(0.06))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .strokeBorder(Color.primary.opacity(0.08), lineWidth: 1)
+            )
+        }
+    }
+}
+
+/// Petite note grise sous un réglage.
+private struct Caption: View {
+    let text: LocalizedStringKey
+
+    init(_ text: LocalizedStringKey) {
+        self.text = text
+    }
+
+    var body: some View {
+        Text(text)
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
 // MARK: - Onglet Général
 
 struct GeneralSettingsView: View {
@@ -7,51 +139,85 @@ struct GeneralSettingsView: View {
     @State private var launchAtLogin = LaunchAtLogin.isEnabled
 
     var body: some View {
-        Form {
-            Section("Objectif quotidien") {
+        VStack(alignment: .leading, spacing: 18) {
+            GlassCard("Objectif quotidien") {
                 Picker("Calcul", selection: $settings.goalMode) {
                     Text("Fixe").tag(GoalMode.fixed)
                     Text("Selon mon poids").tag(GoalMode.weight)
                 }
                 .pickerStyle(.segmented)
+                .labelsHidden()
 
                 switch settings.goalMode {
                 case .fixed:
-                    Stepper(value: $settings.fixedGoalMilliliters,
-                            in: AppSettings.fixedGoalRange,
-                            step: AppSettings.fixedGoalStep) {
-                        LabeledContent("Objectif", value: Formatters.liters(settings.fixedGoalMilliliters))
+                    HStack {
+                        Text("Objectif")
+                        Spacer()
+                        Text(Formatters.liters(settings.fixedGoalMilliliters))
+                            .font(.body.weight(.semibold))
+                            .monospacedDigit()
+                        Stepper("", value: $settings.fixedGoalMilliliters,
+                                in: AppSettings.fixedGoalRange,
+                                step: AppSettings.fixedGoalStep)
+                            .labelsHidden()
                     }
                 case .weight:
-                    Stepper(value: $settings.weightKilograms, in: AppSettings.weightRange) {
-                        LabeledContent("Poids", value: "\(settings.weightKilograms) kg")
+                    HStack {
+                        Text("Poids")
+                        Spacer()
+                        Text("\(settings.weightKilograms) kg")
+                            .font(.body.weight(.semibold))
+                            .monospacedDigit()
+                        Stepper("", value: $settings.weightKilograms, in: AppSettings.weightRange)
+                            .labelsHidden()
                     }
-                    LabeledContent("Objectif calculé", value: Formatters.liters(settings.goalMilliliters))
-                    Text("Poids × 33 ml, arrondi à 0,1 L.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    HStack {
+                        Text("Objectif calculé")
+                        Spacer()
+                        Text(Formatters.liters(settings.goalMilliliters))
+                            .font(.body.weight(.semibold))
+                            .foregroundStyle(Theme.waterLight)
+                    }
+                    Caption("Poids × 33 ml, arrondi à 0,1 L.")
                 }
             }
 
-            Section("Barre de menus") {
-                Picker("Afficher", selection: $settings.menuBarDisplay) {
-                    Text("Icône seule").tag(MenuBarDisplay.iconOnly)
-                    Text("Icône + litres").tag(MenuBarDisplay.liters)
-                    Text("Icône + pourcentage").tag(MenuBarDisplay.percent)
+            GlassCard("Barre de menus") {
+                HStack {
+                    Text("Afficher")
+                    Spacer()
+                    Picker("Afficher", selection: $settings.menuBarDisplay) {
+                        Text("Icône seule").tag(MenuBarDisplay.iconOnly)
+                        Text("Icône + litres").tag(MenuBarDisplay.liters)
+                        Text("Icône + pourcentage").tag(MenuBarDisplay.percent)
+                    }
+                    .labelsHidden()
+                    .fixedSize()
                 }
             }
 
-            Section {
-                Toggle("Son à chaque verre", isOn: $settings.soundEnabled)
-                Toggle("Lancer Plouf au démarrage", isOn: $launchAtLogin)
-                    .onChange(of: launchAtLogin) { newValue in
-                        // On relit l'état réel : l'opération peut échouer ou demander une validation.
-                        let actual = LaunchAtLogin.set(newValue)
-                        if actual != newValue { launchAtLogin = actual }
-                    }
+            GlassCard("Divers") {
+                HStack {
+                    Text("Son à chaque verre")
+                    Spacer()
+                    Toggle("Son à chaque verre", isOn: $settings.soundEnabled)
+                        .labelsHidden()
+                        .toggleStyle(.switch)
+                }
+                HStack {
+                    Text("Lancer Plouf au démarrage")
+                    Spacer()
+                    Toggle("Lancer Plouf au démarrage", isOn: $launchAtLogin)
+                        .labelsHidden()
+                        .toggleStyle(.switch)
+                        .onChange(of: launchAtLogin) { newValue in
+                            // On relit l'état réel : l'opération peut échouer ou demander une validation.
+                            let actual = LaunchAtLogin.set(newValue)
+                            if actual != newValue { launchAtLogin = actual }
+                        }
+                }
             }
         }
-        .waterFormStyle()
     }
 }
 
@@ -61,20 +227,18 @@ struct GlassesSettingsView: View {
     @ObservedObject var settings: AppSettings
 
     var body: some View {
-        Form {
-            Section {
+        VStack(alignment: .leading, spacing: 18) {
+            GlassCard("Unité") {
                 Picker("Unité", selection: $settings.volumeUnit) {
                     Text("Centilitres (cl)").tag(VolumeUnit.centiliters)
                     Text("Millilitres (ml)").tag(VolumeUnit.milliliters)
                 }
                 .pickerStyle(.segmented)
-            } footer: {
-                Text("25 cl = 250 ml. Le total du jour reste affiché en litres.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                .labelsHidden()
+                Caption("25 cl = 250 ml. Le total du jour reste affiché en litres.")
             }
 
-            Section {
+            GlassCard("Tailles de verre") {
                 ForEach($settings.glasses) { $glass in
                     GlassRow(glass: $glass,
                              unit: settings.volumeUnit,
@@ -83,21 +247,19 @@ struct GlassesSettingsView: View {
                              makeDefault: { settings.defaultGlassID = glass.id },
                              delete: { settings.removeGlass(id: glass.id) })
                 }
-            } header: {
-                Text("Tailles de verre")
-            } footer: {
-                Text("De \(Formatters.glass(AppSettings.glassRange.lowerBound, unit: settings.volumeUnit)) à \(Formatters.glass(AppSettings.glassRange.upperBound, unit: settings.volumeUnit)). L'étoile marque le verre par défaut, proposé dans les notifications.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
 
-            Button {
-                settings.addGlass()
-            } label: {
-                Label("Ajouter un verre", systemImage: "plus")
+                Button {
+                    settings.addGlass()
+                } label: {
+                    Label("Ajouter un verre", systemImage: "plus.circle.fill")
+                        .foregroundStyle(Theme.waterLight)
+                }
+                .buttonStyle(.plain)
+                .padding(.top, 2)
+
+                Caption("De \(Formatters.glass(AppSettings.glassRange.lowerBound, unit: settings.volumeUnit)) à \(Formatters.glass(AppSettings.glassRange.upperBound, unit: settings.volumeUnit)). L'étoile marque le verre par défaut, proposé dans les notifications.")
             }
         }
-        .waterFormStyle()
     }
 }
 
@@ -127,8 +289,7 @@ private struct GlassRow: View {
             .buttonStyle(.borderless)
             .help(Text("Verre par défaut"))
 
-            // Titres vides + `prompt` : le texte gris s'affiche dans le champ,
-            // pas comme une étiquette à côté (comportement par défaut dans un Form).
+            // Titres vides + `prompt` : le texte gris s'affiche dans le champ.
             TextField("", text: $glass.name, prompt: Text("Nom (facultatif)"))
                 .labelsHidden()
                 .textFieldStyle(.roundedBorder)
