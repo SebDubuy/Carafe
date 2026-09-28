@@ -136,6 +136,17 @@ struct ReminderEngine {
         return ReminderDecision(due: nil, nextDate: next.date, reason: next.reason)
     }
 
+    /// Vrai si rien n'a été bu depuis le délai d'inactivité, pendant la plage horaire
+    /// et tant que l'objectif n'est pas atteint : l'icône passe alors en « alerte ».
+    func isInactive(_ input: ReminderInput) -> Bool {
+        guard config.inactivityEnabled,
+              input.goal <= 0 || input.todayTotal < input.goal,
+              let window = activeWindow(on: input.now),
+              window.contains(input.now) else { return false }
+        let reference = max(input.lastDrinkAt ?? window.start, window.start)
+        return input.now.timeIntervalSince(reference) >= config.inactivityInterval
+    }
+
     /// Met à jour l'état après l'envoi d'un rappel.
     func stateAfterSending(_ kind: ReminderKind, at now: Date, from state: ReminderState) -> ReminderState {
         var state = state

@@ -8,6 +8,8 @@ final class ReminderScheduler: ObservableObject {
     /// Dernière décision du moteur (affichée en mode debug).
     @Published private(set) var decision: ReminderDecision?
     @Published private(set) var isAway = false
+    /// Rien bu depuis le délai d'inactivité : l'icône passe en orange (rappel discret).
+    @Published private(set) var isInactive = false
     @Published private(set) var state: ReminderState {
         didSet { saveState() }
     }
@@ -36,6 +38,7 @@ final class ReminderScheduler: ObservableObject {
     /// Réglages, pour la fenêtre des réglages.
     var settingsForUI: AppSettings { store.settings }
     var goalReachedToday: Bool { store.goalReached }
+    var storeForUI: HydrationStore { store }
 
     /// Paramètres du moteur, tirés des réglages (tout à 1 minute en mode debug « délais courts »).
     var config: ReminderConfig {
@@ -99,13 +102,17 @@ final class ReminderScheduler: ObservableObject {
 
     // MARK: - Évaluation
 
-    func evaluate(now: Date = Date()) {
+    func evaluate(now: Date? = nil) {
+        // Au passage, on vérifie si le jour a changé (minuit passé pendant une veille, etc.).
+        store.refreshDay()
         notifications.refreshAuthorization()
+        let now = now ?? store.now
         let engine = ReminderEngine(config: config)
         let input = ReminderInput(now: now,
                                   todayTotal: store.todayTotal,
                                   goal: store.goalMilliliters,
-                                  lastDrinkAt: store.todayEntries.last?.date)
+                                  lastDrinkAt: store.lastDrinkToday)
+        isInactive = engine.isInactive(input)
         var result = engine.evaluate(input, state: state)
 
         if isAway {
@@ -146,7 +153,8 @@ final class ReminderScheduler: ObservableObject {
     }
 
     /// « Rappeler dans 15 min ».
-    func snooze(now: Date = Date()) {
+    func snooze() {
+        let now = store.now
         state = ReminderEngine(config: config).stateAfterSnooze(at: now, from: state)
         evaluate(now: now)
     }

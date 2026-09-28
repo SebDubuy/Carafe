@@ -5,6 +5,7 @@ import Foundation
 struct Persistence {
     private enum Key {
         static let entries = "entries"
+        static let dailyGoals = "dailyGoals"
     }
 
     let defaults: UserDefaults
@@ -19,6 +20,14 @@ struct Persistence {
 
     func saveEntries(_ entries: [DrinkEntry]) {
         save(entries, forKey: Key.entries)
+    }
+
+    func loadDailyGoals() -> [String: Int] {
+        load([String: Int].self, forKey: Key.dailyGoals) ?? [:]
+    }
+
+    func saveDailyGoals(_ goals: [String: Int]) {
+        save(goals, forKey: Key.dailyGoals)
     }
 
     // MARK: - Outils génériques

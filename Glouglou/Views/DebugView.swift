@@ -5,6 +5,7 @@ import SwiftUI
 struct DebugView: View {
     @ObservedObject var settings: AppSettings
     @ObservedObject var scheduler: ReminderScheduler
+    @ObservedObject var store: HydrationStore
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -16,6 +17,17 @@ struct DebugView: View {
                 row("Dernier rappel de rythme", scheduler.state.lastPaceReminderAt.map(format) ?? "—")
                 row("Rappel reporté jusqu'à", scheduler.state.snoozeUntil.map(format) ?? "—")
                 row("Autorisation", authorizationText)
+            }
+
+            GlassCard("Changement de jour") {
+                row("Jour simulé", store.debugDayOffset == 0 ? "aujourd'hui (réel)" : "+\(store.debugDayOffset) j")
+                row("Série en cours", "\(store.streak) j")
+                HStack {
+                    Button("Passer au jour suivant") { store.debugNextDay(); scheduler.evaluate() }
+                    Button("Revenir à aujourd'hui") { store.debugBackToToday(); scheduler.evaluate() }
+                        .disabled(store.debugDayOffset == 0)
+                }
+                Caption("Les verres ajoutés pendant la simulation sont effacés au retour à aujourd'hui.")
             }
 
             GlassCard("Outils") {

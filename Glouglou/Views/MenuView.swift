@@ -3,17 +3,21 @@ import SwiftUI
 /// Contenu de la fenêtre qui s'ouvre au clic sur l'icône.
 struct MenuView: View {
     @ObservedObject var store: HydrationStore
-    let scheduler: ReminderScheduler
+    @ObservedObject var scheduler: ReminderScheduler
     @Environment(\.colorScheme) private var colorScheme
     /// Quantité libre saisie, dans l'unité choisie (cl ou ml).
     @State private var customAmount: Double?
+    /// Liste des verres du jour dépliée ou non.
+    @State private var showTodayList = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             progressSection
             addButtons
             customAmountRow
-            undoRow
+            todaySection
+            Divider()
+            historySection
             NotificationsWarning(notifications: scheduler.notifications)
             Divider()
             footer
@@ -30,7 +34,8 @@ struct MenuView: View {
             HStack(spacing: 6) {
                 // Même goutte que dans la barre de menus, remplie selon la progression.
                 Image(nsImage: DropIconRenderer.image(progress: store.progress,
-                                                      darkMenuBar: colorScheme == .dark))
+                                                      darkMenuBar: colorScheme == .dark,
+                                                      alert: scheduler.isInactive))
                 Text("Aujourd'hui")
                     .font(.headline)
                 Spacer()
@@ -54,7 +59,32 @@ struct MenuView: View {
                     .font(.callout.weight(.medium))
                     .foregroundStyle(.primary)
             }
+            infoLine
         }
+    }
+
+    /// « Dernier verre il y a 45 min » et la série de jours.
+    private var infoLine: some View {
+        HStack(spacing: 8) {
+            // Rafraîchi chaque minute pour que « il y a… » reste juste.
+            TimelineView(.periodic(from: .now, by: 60)) { _ in
+                Text(lastDrinkText)
+                    .foregroundStyle(scheduler.isInactive ? Color.orange : Color.secondary)
+            }
+            Spacer()
+            if store.streak >= 2 {
+                Text("🔥 \(store.streak) jours d'affilée")
+                    .foregroundStyle(.primary)
+            }
+        }
+        .font(.callout)
+    }
+
+    private var lastDrinkText: String {
+        guard let last = store.lastDrinkToday else {
+            return String(localized: "Pas encore de verre aujourd'hui")
+        }
+        return String(localized: "Dernier verre \(Formatters.elapsed(since: last, now: store.now))")
     }
 
     // MARK: - Ajout rapide
@@ -128,6 +158,67 @@ struct MenuView: View {
         SoundPlayer.playDrinkSound(if: store.settings.soundEnabled)
     }
 
+    // MARK: - Verres du jour
+
+    private var todaySection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                undoRow
+                Spacer()
+                if !store.todayEntries.isEmpty {
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.2)) { showTodayList.toggle() }
+                    } label: {
+                        HStack(spacing: 4) {
+                            Text("Verres du jour (\(store.todayEntries.count))")
+                            Image(systemName: "chevron.down")
+                                .rotationEffect(.degrees(showTodayList ? 180 : 0))
+                        }
+                    }
+                    .buttonStyle(.borderless)
+                    .font(.callout)
+                }
+            }
+            if showTodayList && !store.todayEntries.isEmpty {
+                VStack(spacing: 4) {
+                    // Du plus récent au plus ancien.
+                    ForEach(store.todayEntries.reversed()) { entry in
+                        HStack {
+                            Text(entry.date.formatted(date: .omitted, time: .shortened))
+                                .foregroundStyle(.secondary)
+                                .monospacedDigit()
+                            Text(Formatters.glass(entry.milliliters, unit: unit))
+                            Spacer()
+                            Button {
+                                store.delete(id: entry.id)
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                            .buttonStyle(.borderless)
+                            .foregroundStyle(.secondary)
+                            .help(Text("Supprimer ce verre"))
+                        }
+                        .font(.callout)
+                    }
+                }
+                .padding(10)
+                .background(RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(Color.primary.opacity(0.06)))
+            }
+        }
+    }
+
+    // MARK: - Historique
+
+    private var historySection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("7 derniers jours")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.secondary)
+            HistoryBarsView(days: store.history(days: 7))
+        }
+    }
+
     // MARK: - Annulation
 
     private var undoRow: some View {
@@ -137,7 +228,7 @@ struct MenuView: View {
             HStack(spacing: 6) {
                 Image(systemName: "arrow.uturn.backward")
                     .foregroundStyle(Theme.water)
-                Text("Annuler le dernier ajout")
+                Text("Annuler")
                 if let last = store.todayEntries.last {
                     Text("(\(Formatters.glass(last.milliliters, unit: unit)))")
                         .foregroundStyle(.secondary)
@@ -147,6 +238,7 @@ struct MenuView: View {
         .buttonStyle(.borderless)
         .font(.callout)
         .disabled(!store.canUndo)
+        .help(Text("Annuler le dernier ajout"))
     }
 
     // MARK: - Bas du menu

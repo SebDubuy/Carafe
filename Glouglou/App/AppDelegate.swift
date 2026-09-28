@@ -7,6 +7,7 @@ import UserNotifications
 final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate {
     let store = HydrationStore(settings: AppSettings())
     lazy var scheduler = ReminderScheduler(store: store)
+    private let dayClock = DayClock()
 
     func applicationWillFinishLaunching(_ notification: Notification) {
         // Le délégué doit être en place avant la fin du lancement, pour recevoir
@@ -17,6 +18,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Pendant les tests unitaires, l'app sert d'hôte : pas de vraies notifications.
         guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else { return }
+        // Remise à zéro quotidienne : vérifiée au lancement, à minuit et au réveil.
+        store.refreshDay()
+        dayClock.onDayMayHaveChanged = { [weak self] in
+            self?.store.refreshDay()
+            self?.scheduler.evaluate()
+        }
+        dayClock.start()
         scheduler.start()
     }
 

@@ -22,13 +22,14 @@ enum DropIconRenderer {
     /// Cache des images déjà dessinées, une par palier et par apparence.
     private static var cache: [String: NSImage] = [:]
 
-    /// Icône de la barre de menus.
-    static func image(progress: Double, darkMenuBar: Bool) -> NSImage {
+    /// Icône de la barre de menus. `alert` : rien bu depuis longtemps → contour orange
+    /// (rappel discret, sans notification).
+    static func image(progress: Double, darkMenuBar: Bool, alert: Bool = false) -> NSImage {
         let level = level(for: progress)
-        let key = "\(level)-\(darkMenuBar)"
+        let key = "\(level)-\(darkMenuBar)-\(alert)"
         if let cached = cache[key] { return cached }
         let image = NSImage(size: size, flipped: false) { rect in
-            draw(level: level, darkMenuBar: darkMenuBar, in: rect)
+            draw(level: level, darkMenuBar: darkMenuBar, alert: alert, in: rect)
             return true
         }
         image.isTemplate = false
@@ -56,10 +57,13 @@ enum DropIconRenderer {
     /// Eau bleue de l'icône en couleur.
     private static let blueWater = NSColor(srgbRed: 0.18, green: 0.56, blue: 1.0, alpha: 1)
 
-    /// Dessine la goutte en couleur (eau bleue, contour selon la barre de menus).
-    static func draw(level: Int, darkMenuBar: Bool, in rect: NSRect) {
+    /// Orange de l'état « alerte ».
+    private static let alertOrange = NSColor(srgbRed: 1.0, green: 0.62, blue: 0.10, alpha: 1)
+
+    /// Dessine la goutte en couleur (eau bleue, contour selon la barre de menus, orange en alerte).
+    static func draw(level: Int, darkMenuBar: Bool, alert: Bool = false, in rect: NSRect) {
         draw(level: level,
-             lineColor: darkMenuBar ? .white : NSColor(white: 0.12, alpha: 1),
+             lineColor: alert ? alertOrange : (darkMenuBar ? .white : NSColor(white: 0.12, alpha: 1)),
              waterColor: blueWater,
              surfaceColor: blueWater.blended(withFraction: 0.35, of: .white) ?? blueWater,
              in: rect)

@@ -9,7 +9,7 @@ struct GlouglouApp: App {
         MenuBarExtra {
             MenuView(store: appDelegate.store, scheduler: appDelegate.scheduler)
         } label: {
-            MenuBarLabel(store: appDelegate.store)
+            MenuBarLabel(store: appDelegate.store, scheduler: appDelegate.scheduler)
         }
         .menuBarExtraStyle(.window)
     }
@@ -18,13 +18,15 @@ struct GlouglouApp: App {
 /// Ce qui s'affiche dans la barre de menus : la goutte, et le texte optionnel à côté.
 private struct MenuBarLabel: View {
     @ObservedObject var store: HydrationStore
+    @ObservedObject var scheduler: ReminderScheduler
     /// Apparence de la barre de menus, pour choisir la couleur du contour de la goutte.
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         HStack(spacing: 4) {
             Image(nsImage: DropIconRenderer.image(progress: store.progress,
-                                                   darkMenuBar: colorScheme == .dark))
+                                                   darkMenuBar: colorScheme == .dark,
+                                                   alert: scheduler.isInactive))
             if let text {
                 Text(text)
                     .monospacedDigit()

@@ -36,6 +36,13 @@ enum Formatters {
         return formatter.string(from: NSNumber(value: value)) ?? ""
     }
 
+    /// Temps écoulé : « à l'instant », « il y a 12 min », « il y a 1 h 20 ».
+    static func elapsed(since date: Date, now: Date = Date()) -> String {
+        let minutes = max(0, Int(now.timeIntervalSince(date) / 60))
+        if minutes < 1 { return String(localized: "à l'instant") }
+        return String(localized: "il y a \(duration(minutes: minutes))")
+    }
+
     /// Durée : 45 → « 45 min », 60 → « 1 h », 90 → « 1 h 30 »
     static func duration(minutes: Int) -> String {
         let hours = minutes / 60

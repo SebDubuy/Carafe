@@ -33,7 +33,7 @@ struct SettingsView: View {
                         RemindersSettingsView(settings: settings, scheduler: scheduler,
                                               notifications: scheduler.notifications)
                     case .debug:
-                        DebugView(settings: settings, scheduler: scheduler)
+                        DebugView(settings: settings, scheduler: scheduler, store: scheduler.storeForUI)
                     }
                 }
                 .padding(.horizontal, 20)
