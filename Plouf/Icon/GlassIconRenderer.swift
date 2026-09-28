@@ -40,9 +40,12 @@ enum GlassIconRenderer {
     /// pour l'onglet « Verres » des réglages.
     static let templateGlass: NSImage = {
         let image = NSImage(size: size, flipped: false) { rect in
+            // Marge autour du verre, comme les symboles système, pour qu'il ne touche pas
+            // les bords du bouton d'onglet.
             draw(level: levels / 2, lineColor: .black,
                  waterColor: NSColor.black.withAlphaComponent(0.45),
-                 surfaceColor: NSColor.black.withAlphaComponent(0.25), in: rect)
+                 surfaceColor: NSColor.black.withAlphaComponent(0.25),
+                 in: rect.insetBy(dx: 3, dy: 3))
             return true
         }
         image.isTemplate = true
