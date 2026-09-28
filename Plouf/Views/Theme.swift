@@ -15,6 +15,17 @@ enum Theme {
                                                startPoint: .top, endPoint: .bottom)
 }
 
+extension View {
+    /// Habillage « eau » d'un formulaire de réglages : voile bleu en fond et contrôles bleus.
+    func waterFormStyle() -> some View {
+        self
+            .formStyle(.grouped)
+            .scrollContentBackground(.hidden)
+            .background(Theme.menuBackground)
+            .tint(Theme.water)
+    }
+}
+
 /// Jauge de progression bleue, en dégradé.
 struct WaterProgressBar: View {
     let progress: Double
@@ -35,23 +46,25 @@ struct WaterProgressBar: View {
     }
 }
 
-/// Bouton d'ajout de verre : verre liquide teinté de bleu sur macOS 26 et plus,
-/// bouton bleu translucide sur les versions précédentes.
+/// Bouton d'ajout de verre : verre liquide clair (non rempli) avec le texte en bleu,
+/// pour ne pas donner l'impression que les verres sont déjà pleins.
+/// Sur macOS 13 à 15, bouton translucide avec un fin liseré bleu.
 struct WaterButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         let shape = RoundedRectangle(cornerRadius: 14, style: .continuous)
         let label = configuration.label
+            .foregroundStyle(Theme.water)
             .frame(maxWidth: .infinity, minHeight: 46)
             .contentShape(shape)
             .scaleEffect(configuration.isPressed ? 0.95 : 1)
             .animation(.spring(response: 0.25, dampingFraction: 0.6), value: configuration.isPressed)
 
         if #available(macOS 26, *) {
-            label.glassEffect(.regular.tint(Theme.water.opacity(0.35)).interactive(), in: shape)
+            label.glassEffect(.regular.interactive(), in: shape)
         } else {
             label
-                .background(shape.fill(Theme.water.opacity(configuration.isPressed ? 0.35 : 0.22)))
-                .overlay(shape.strokeBorder(Theme.waterLight.opacity(0.45), lineWidth: 1))
+                .background(shape.fill(Color.primary.opacity(configuration.isPressed ? 0.12 : 0.06)))
+                .overlay(shape.strokeBorder(Theme.water.opacity(0.35), lineWidth: 1))
         }
     }
 }

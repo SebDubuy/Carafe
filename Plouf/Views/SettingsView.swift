@@ -51,7 +51,7 @@ struct GeneralSettingsView: View {
                     }
             }
         }
-        .formStyle(.grouped)
+        .waterFormStyle()
     }
 }
 
@@ -97,7 +97,7 @@ struct GlassesSettingsView: View {
                 Label("Ajouter un verre", systemImage: "plus")
             }
         }
-        .formStyle(.grouped)
+        .waterFormStyle()
     }
 }
 

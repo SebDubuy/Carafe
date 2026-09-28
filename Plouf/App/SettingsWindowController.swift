@@ -39,7 +39,10 @@ final class SettingsWindowController {
     /// Chaque onglet a une taille fixe : la fenêtre s'y adapte en changeant d'onglet.
     private func tab<Content: View>(_ label: String, image: NSImage?, height: CGFloat,
                                     view: Content) -> NSTabViewItem {
-        let hosting = NSHostingController(rootView: view.frame(width: 460, height: height))
+        // `ignoresSafeArea` : évite une marge vide en haut, sous la barre d'onglets.
+        let hosting = NSHostingController(rootView: view
+            .frame(width: 460, height: height, alignment: .top)
+            .ignoresSafeArea(.container, edges: .top))
         // Le titre de l'onglet sélectionné devient le titre de la fenêtre.
         hosting.title = label
         let item = NSTabViewItem(viewController: hosting)
