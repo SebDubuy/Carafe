@@ -10,18 +10,42 @@ enum Theme {
     static let waterGradient = LinearGradient(colors: [waterLight, water],
                                               startPoint: .leading, endPoint: .trailing)
 
-    /// Fond du menu : un voile bleu qui s'estompe vers le bas.
-    static let menuBackground = LinearGradient(colors: [water.opacity(0.30), water.opacity(0.06)],
-                                               startPoint: .top, endPoint: .bottom)
+    /// Voile bleu très léger et uniforme, commun au menu et aux réglages.
+    static let tint = water.opacity(0.12)
+}
+
+/// Fond « verre bleuté » : flou de ce qui est derrière la fenêtre + voile bleu très léger.
+/// Utilisé tel quel par le menu et la fenêtre des réglages pour qu'ils se ressemblent.
+struct GlassBackground: View {
+    var body: some View {
+        ZStack {
+            VisualEffectBackground()
+            Theme.tint
+        }
+        .ignoresSafeArea()
+    }
+}
+
+/// Flou natif macOS (`NSVisualEffectView`) derrière la fenêtre.
+private struct VisualEffectBackground: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        view.material = .popover
+        view.blendingMode = .behindWindow
+        view.state = .active
+        return view
+    }
+
+    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {}
 }
 
 extension View {
-    /// Habillage « eau » d'un formulaire de réglages : voile bleu en fond et contrôles bleus.
+    /// Habillage d'un formulaire de réglages : fond transparent (le verre bleuté de la fenêtre
+    /// passe dessous), contenu collé en haut et contrôles bleus.
     func waterFormStyle() -> some View {
         self
             .formStyle(.grouped)
             .scrollContentBackground(.hidden)
-            .background(Theme.menuBackground)
             .tint(Theme.water)
     }
 }
@@ -53,7 +77,7 @@ struct WaterButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         let shape = RoundedRectangle(cornerRadius: 14, style: .continuous)
         let label = configuration.label
-            .foregroundStyle(Theme.water)
+            .foregroundStyle(.primary)
             .frame(maxWidth: .infinity, minHeight: 46)
             .contentShape(shape)
             .scaleEffect(configuration.isPressed ? 0.95 : 1)

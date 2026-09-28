@@ -17,7 +17,7 @@ struct MenuView: View {
         }
         .padding(16)
         .frame(width: 300)
-        .background(Theme.menuBackground)
+        .background(GlassBackground())
     }
 
     // MARK: - Progression du jour
@@ -32,7 +32,7 @@ struct MenuView: View {
                 Spacer()
                 Text(Formatters.percent(Double(store.todayTotal) / Double(max(store.goalMilliliters, 1))))
                     .font(.system(.callout, design: .rounded).weight(.semibold))
-                    .foregroundStyle(Theme.water)
+                    .foregroundStyle(.secondary)
                     .monospacedDigit()
             }
             HStack(alignment: .firstTextBaseline, spacing: 6) {
@@ -46,9 +46,9 @@ struct MenuView: View {
             .monospacedDigit()
             WaterProgressBar(progress: store.progress)
             if store.goalReached {
-                Text("Objectif atteint, bravo !")
-                    .font(.callout)
-                    .foregroundStyle(Theme.water)
+                Text("Objectif atteint, bravo ! 🎉")
+                    .font(.callout.weight(.medium))
+                    .foregroundStyle(.primary)
             }
         }
     }
