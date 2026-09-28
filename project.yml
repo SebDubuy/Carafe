@@ -1,0 +1,61 @@
+name: Plouf
+options:
+  bundleIdPrefix: com.sebdubuy
+  deploymentTarget:
+    macOS: "13.0"
+  developmentLanguage: fr
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+    CODE_SIGN_IDENTITY: "-"
+    SWIFT_EMIT_LOC_STRINGS: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+
+targets:
+  Plouf:
+    type: application
+    platform: macOS
+    sources:
+      - path: Plouf
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sebdubuy.Plouf
+        PRODUCT_NAME: Plouf
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_LSUIElement: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Plouf
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.healthcare-fitness
+        INFOPLIST_KEY_NSHumanReadableCopyright: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ENABLE_HARDENED_RUNTIME: YES
+        ENABLE_APP_SANDBOX: YES
+
+  PloufTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: PloufTests
+    dependencies:
+      - target: Plouf
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sebdubuy.PloufTests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Plouf.app/Contents/MacOS/Plouf"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+
+schemes:
+  Plouf:
+    build:
+      targets:
+        Plouf: all
+        PloufTests: [test]
+    test:
+      targets:
+        - PloufTests
