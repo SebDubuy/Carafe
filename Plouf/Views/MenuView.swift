@@ -17,7 +17,7 @@ struct MenuView: View {
         }
         .padding(16)
         .frame(width: 300)
-        .background(GlassBackground())
+        .background(GlassBackground().ignoresSafeArea())
     }
 
     // MARK: - Progression du jour

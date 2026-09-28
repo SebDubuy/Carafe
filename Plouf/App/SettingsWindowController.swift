@@ -21,6 +21,9 @@ final class SettingsWindowController {
             window.titleVisibility = .hidden
             window.title = String(localized: "Réglages de Plouf")
             window.isMovableByWindowBackground = true
+            // Fenêtre transparente : c'est le verre liquide du fond qui fait tout le rendu.
+            window.isOpaque = false
+            window.backgroundColor = .clear
             window.isReleasedWhenClosed = false
             window.center()
             self.window = window

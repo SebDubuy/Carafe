@@ -10,33 +10,42 @@ enum Theme {
     static let waterGradient = LinearGradient(colors: [waterLight, water],
                                               startPoint: .leading, endPoint: .trailing)
 
-    /// Voile bleu très léger et uniforme, commun au menu et aux réglages.
-    static let tint = water.opacity(0.18)
+    /// Touche de bleu posée sur le verre du fond (très légère : on doit voir à travers).
+    static let glassTint = NSColor(srgbRed: 0.18, green: 0.56, blue: 1.0, alpha: 0.10)
 }
 
-/// Fond « verre bleuté » : flou de ce qui est derrière la fenêtre + voile bleu très léger.
-/// Utilisé tel quel par le menu et la fenêtre des réglages pour qu'ils se ressemblent.
-struct GlassBackground: View {
-    var body: some View {
-        ZStack {
-            VisualEffectBackground()
-            Theme.tint
+/// Fond « verre liquide » bleuté, commun au menu et à la fenêtre des réglages.
+/// - macOS 26 et plus : vrai matériau Liquid Glass (`NSGlassEffectView`, style transparent).
+/// - Avant : flou translucide classique (`NSVisualEffectView`) avec la même touche de bleu.
+/// La fenêtre qui l'accueille doit être transparente pour qu'on voie à travers.
+struct GlassBackground: NSViewRepresentable {
+    /// Arrondi des coins, à caler sur celui de la fenêtre quand elle est transparente.
+    var cornerRadius: CGFloat = 0
+
+    func makeNSView(context: Context) -> NSView {
+        if #available(macOS 26, *) {
+            let glass = NSGlassEffectView()
+            glass.style = .clear
+            glass.tintColor = Theme.glassTint
+            glass.cornerRadius = cornerRadius
+            return glass
         }
-        .ignoresSafeArea()
+        let blur = NSVisualEffectView()
+        blur.material = .hudWindow
+        blur.blendingMode = .behindWindow
+        blur.state = .active
+        blur.wantsLayer = true
+        blur.layer?.cornerRadius = cornerRadius
+        blur.layer?.masksToBounds = true
+        let tint = NSView()
+        tint.wantsLayer = true
+        tint.layer?.backgroundColor = Theme.glassTint.cgColor
+        tint.autoresizingMask = [.width, .height]
+        blur.addSubview(tint)
+        return blur
     }
-}
 
-/// Flou natif macOS (`NSVisualEffectView`) derrière la fenêtre.
-private struct VisualEffectBackground: NSViewRepresentable {
-    func makeNSView(context: Context) -> NSVisualEffectView {
-        let view = NSVisualEffectView()
-        view.material = .popover
-        view.blendingMode = .behindWindow
-        view.state = .active
-        return view
-    }
-
-    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {}
+    func updateNSView(_ nsView: NSView, context: Context) {}
 }
 
 

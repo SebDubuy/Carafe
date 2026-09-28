@@ -33,7 +33,7 @@ struct SettingsView: View {
             }
         }
         .frame(width: 460, height: 540)
-        .background(GlassBackground())
+        .background(GlassBackground(cornerRadius: 16).ignoresSafeArea())
         .tint(Theme.water)
     }
 
@@ -43,7 +43,12 @@ struct SettingsView: View {
                 Image(systemName: "gearshape")
             } action: { tab = .general }
             TabButton(title: "Verres", isSelected: tab == .glasses) {
+                // Image dessinée en code : on l'agrandit à la taille des symboles système.
                 Image(nsImage: GlassIconRenderer.templateGlass)
+                    .renderingMode(.template)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 26, height: 26)
             } action: { tab = .glasses }
         }
     }
