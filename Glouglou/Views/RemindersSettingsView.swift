@@ -31,9 +31,7 @@ struct RemindersSettingsView: View {
                         .font(.body.weight(.medium))
                     Caption("Autorise-les dans Réglages Système › Notifications › Glouglou pour recevoir les rappels.")
                     Button("Ouvrir les réglages des notifications") {
-                        if let url = URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension") {
-                            NSWorkspace.shared.open(url)
-                        }
+                        NotificationManager.openSystemSettings()
                     }
                 }
             }

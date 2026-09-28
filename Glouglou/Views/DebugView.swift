@@ -26,6 +26,12 @@ struct DebugView: View {
                         .labelsHidden()
                         .toggleStyle(.switch)
                 }
+                if scheduler.notifications.authorization == .denied {
+                    Label("Notifications refusées par macOS : le rappel test ne s'affichera pas.",
+                          systemImage: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.orange)
+                        .font(.callout)
+                }
                 HStack {
                     Button("Réévaluer maintenant") { scheduler.evaluate() }
                     Button("Envoyer un rappel test") { scheduler.sendTestReminder() }

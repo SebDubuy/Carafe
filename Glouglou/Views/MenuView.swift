@@ -14,6 +14,7 @@ struct MenuView: View {
             addButtons
             customAmountRow
             undoRow
+            NotificationsWarning(notifications: scheduler.notifications)
             Divider()
             footer
         }
@@ -165,5 +166,28 @@ struct MenuView: View {
             }
         }
         .buttonStyle(.borderless)
+    }
+}
+
+/// Avertissement discret quand macOS bloque les notifications de Glouglou :
+/// sans ça, les rappels partent mais ne s'affichent jamais.
+private struct NotificationsWarning: View {
+    @ObservedObject var notifications: NotificationManager
+
+    var body: some View {
+        if notifications.authorization == .denied {
+            Button {
+                NotificationManager.openSystemSettings()
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "bell.slash.fill")
+                        .foregroundStyle(.orange)
+                    Text("Notifications bloquées : les autoriser…")
+                }
+            }
+            .buttonStyle(.borderless)
+            .font(.callout)
+            .help(Text("Réglages Système › Notifications › Glouglou"))
+        }
     }
 }

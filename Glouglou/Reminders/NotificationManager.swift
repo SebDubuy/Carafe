@@ -1,4 +1,4 @@
-import Foundation
+import AppKit
 import UserNotifications
 
 /// Envoi des notifications Glouglou : autorisation, actions, et un seul identifiant
@@ -48,6 +48,13 @@ final class NotificationManager: ObservableObject {
         content.categoryIdentifier = Self.categoryIdentifier
         let request = UNNotificationRequest(identifier: Self.reminderIdentifier, content: content, trigger: nil)
         center.add(request)
+    }
+
+    /// Ouvre Réglages Système › Notifications, pour autoriser Glouglou.
+    static func openSystemSettings() {
+        if let url = URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension") {
+            NSWorkspace.shared.open(url)
+        }
     }
 
     /// Retire le rappel affiché (par exemple quand on vient de boire : il n'est plus pertinent).
