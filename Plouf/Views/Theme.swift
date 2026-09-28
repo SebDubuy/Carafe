@@ -10,12 +10,13 @@ enum Theme {
     static let waterGradient = LinearGradient(colors: [waterLight, water],
                                               startPoint: .leading, endPoint: .trailing)
 
-    /// Touche de bleu posée sur le verre du fond (très légère : on doit voir à travers).
-    static let glassTint = NSColor(srgbRed: 0.18, green: 0.56, blue: 1.0, alpha: 0.10)
+    /// Touche de bleu posée sur le verre du fond.
+    static let glassTint = NSColor(srgbRed: 0.18, green: 0.56, blue: 1.0, alpha: 0.16)
 }
 
 /// Fond « verre liquide » bleuté, commun au menu et à la fenêtre des réglages.
-/// - macOS 26 et plus : vrai matériau Liquid Glass (`NSGlassEffectView`, style transparent).
+/// - macOS 26 et plus : vrai matériau Liquid Glass (`NSGlassEffectView`, style normal :
+///   assez dépoli pour que le texte des fenêtres derrière ne se lise pas).
 /// - Avant : flou translucide classique (`NSVisualEffectView`) avec la même touche de bleu.
 /// La fenêtre qui l'accueille doit être transparente pour qu'on voie à travers.
 struct GlassBackground: NSViewRepresentable {
@@ -25,7 +26,7 @@ struct GlassBackground: NSViewRepresentable {
     func makeNSView(context: Context) -> NSView {
         if #available(macOS 26, *) {
             let glass = NSGlassEffectView()
-            glass.style = .clear
+            glass.style = .regular
             glass.tintColor = Theme.glassTint
             glass.cornerRadius = cornerRadius
             return glass
@@ -56,8 +57,10 @@ struct WaterProgressBar: View {
     var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .leading) {
+                // Rail toujours visible, même à 0 %, quel que soit le fond.
                 Capsule()
-                    .fill(Theme.water.opacity(0.15))
+                    .fill(Color.primary.opacity(0.12))
+                    .overlay(Capsule().strokeBorder(Color.primary.opacity(0.15), lineWidth: 1))
                 Capsule()
                     .fill(Theme.waterGradient)
                     .frame(width: max(proxy.size.width * min(max(progress, 0), 1), progress > 0 ? 10 : 0))
