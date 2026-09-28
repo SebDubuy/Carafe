@@ -60,7 +60,10 @@ final class HydrationStoreTests: XCTestCase {
     func testFormats() {
         XCTAssertEqual(Formatters.liters(1200), "1,2 L")
         XCTAssertEqual(Formatters.liters(2000), "2 L")
-        XCTAssertEqual(Formatters.glass(250), "25 cl")
-        XCTAssertEqual(Formatters.glass(333), "333 ml")
+        XCTAssertEqual(Formatters.glass(250, unit: .centiliters), "25 cl")
+        XCTAssertEqual(Formatters.glass(333, unit: .centiliters), "33,3 cl")
+        XCTAssertEqual(Formatters.glass(5000, unit: .centiliters), "500 cl")
+        XCTAssertEqual(Formatters.glass(250, unit: .milliliters), "250 ml")
+        XCTAssertEqual(Formatters.glass(1500, unit: .milliliters), "1500 ml")
     }
 }

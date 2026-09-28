@@ -18,7 +18,7 @@ final class SettingsWindowController {
             tabs.tabStyle = .toolbar
             tabs.addTabViewItem(tab(String(localized: "Général"), symbol: "gearshape", height: 330,
                                     view: GeneralSettingsView(settings: settings)))
-            tabs.addTabViewItem(tab(String(localized: "Verres"), symbol: "cup.and.saucer", height: 440,
+            tabs.addTabViewItem(tab(String(localized: "Verres"), symbol: "cup.and.saucer", height: 500,
                                     view: GlassesSettingsView(settings: settings)))
 
             let window = NSWindow(contentViewController: tabs)

@@ -63,8 +63,21 @@ struct GlassesSettingsView: View {
     var body: some View {
         Form {
             Section {
+                Picker("Unité", selection: $settings.volumeUnit) {
+                    Text("Centilitres (cl)").tag(VolumeUnit.centiliters)
+                    Text("Millilitres (ml)").tag(VolumeUnit.milliliters)
+                }
+                .pickerStyle(.segmented)
+            } footer: {
+                Text("25 cl = 250 ml. Le total du jour reste affiché en litres.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section {
                 ForEach($settings.glasses) { $glass in
                     GlassRow(glass: $glass,
+                             unit: settings.volumeUnit,
                              isDefault: settings.defaultGlassID == glass.id,
                              canDelete: settings.glasses.count > 1,
                              makeDefault: { settings.defaultGlassID = glass.id },
@@ -73,7 +86,7 @@ struct GlassesSettingsView: View {
             } header: {
                 Text("Tailles de verre")
             } footer: {
-                Text("Entre 1 et \(AppSettings.glassRange.upperBound / 10) cl. L'étoile marque le verre par défaut, proposé dans les notifications.")
+                Text("De \(Formatters.glass(AppSettings.glassRange.lowerBound, unit: settings.volumeUnit)) à \(Formatters.glass(AppSettings.glassRange.upperBound, unit: settings.volumeUnit)). L'étoile marque le verre par défaut, proposé dans les notifications.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -90,16 +103,17 @@ struct GlassesSettingsView: View {
 
 private struct GlassRow: View {
     @Binding var glass: GlassSize
+    let unit: VolumeUnit
     let isDefault: Bool
     let canDelete: Bool
     let makeDefault: () -> Void
     let delete: () -> Void
 
-    /// La quantité s'édite en centilitres.
-    private var centiliters: Binding<Int> {
+    /// La quantité s'édite dans l'unité choisie (cl ou ml), mais reste stockée en ml.
+    private var amount: Binding<Double> {
         Binding(
-            get: { glass.milliliters / 10 },
-            set: { glass.milliliters = min(max($0 * 10, AppSettings.glassRange.lowerBound),
+            get: { unit.value(fromMilliliters: glass.milliliters) },
+            set: { glass.milliliters = min(max(unit.milliliters(from: $0), AppSettings.glassRange.lowerBound),
                                            AppSettings.glassRange.upperBound) }
         )
     }
@@ -119,13 +133,14 @@ private struct GlassRow: View {
                 .labelsHidden()
                 .textFieldStyle(.roundedBorder)
 
-            TextField("", value: centiliters, format: .number, prompt: Text("25"))
+            TextField("", value: amount, format: .number.grouping(.never), prompt: Text(unit == .centiliters ? "25" : "250"))
                 .labelsHidden()
                 .textFieldStyle(.roundedBorder)
                 .multilineTextAlignment(.trailing)
-                .frame(width: 56)
-            Text("cl")
+                .frame(width: 60)
+            Text(unit.symbol)
                 .foregroundStyle(.secondary)
+                .frame(width: 20, alignment: .leading)
 
             Button(action: delete) {
                 Image(systemName: "minus.circle.fill")

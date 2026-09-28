@@ -20,9 +20,20 @@ enum Formatters {
         "\(litersValue(milliliters)) L"
     }
 
-    /// Quantité de verre : en cl si ça tombe juste (250 → « 25 cl »), sinon en ml.
-    static func glass(_ milliliters: Int) -> String {
-        milliliters % 10 == 0 ? "\(milliliters / 10) cl" : "\(milliliters) ml"
+    /// Contenance d'un verre dans l'unité choisie : 250 → « 25 cl » ou « 250 ml », 333 → « 33,3 cl ».
+    static func glass(_ milliliters: Int, unit: VolumeUnit) -> String {
+        "\(number(unit.value(fromMilliliters: milliliters), maxFractionDigits: 1)) \(unit.symbol)"
+    }
+
+    /// Nombre avec virgule décimale, sans zéros inutiles.
+    static func number(_ value: Double, maxFractionDigits: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.locale = locale
+        formatter.numberStyle = .decimal
+        formatter.usesGroupingSeparator = false
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = maxFractionDigits
+        return formatter.string(from: NSNumber(value: value)) ?? ""
     }
 
     /// 0.6 → « 60 % » (espace fine insécable avant le signe, à la française)

@@ -95,7 +95,7 @@ Hors périmètre (écarté) : types de boisson (on reste sur l'eau), raccourci c
 
 ## Conventions
 
-- Formats français : virgule décimale, « cl » et « L ».
+- Formats français : virgule décimale, « L » pour les totaux ; contenance des verres en « cl » (défaut) ou « ml », au choix dans les réglages.
 - Tous les textes de l'interface en français, centralisés pour faciliter une future traduction (String Catalog).
 - Commentaires dans le code en français.
 - Pas de dépendances externes sauf nécessité réelle.

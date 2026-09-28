@@ -8,6 +8,33 @@ enum GoalMode: String, Codable, CaseIterable {
     case weight
 }
 
+/// Unité d'affichage et de saisie des contenances de verre.
+/// Les quantités sont toujours stockées en ml ; le total du jour reste affiché en litres.
+enum VolumeUnit: String, Codable, CaseIterable {
+    case centiliters
+    case milliliters
+
+    var symbol: String {
+        switch self {
+        case .centiliters: return "cl"
+        case .milliliters: return "ml"
+        }
+    }
+
+    /// Nombre de ml dans une unité.
+    private var millilitersPerUnit: Double {
+        self == .centiliters ? 10 : 1
+    }
+
+    func value(fromMilliliters ml: Int) -> Double {
+        Double(ml) / millilitersPerUnit
+    }
+
+    func milliliters(from value: Double) -> Int {
+        Int((value * millilitersPerUnit).rounded())
+    }
+}
+
 /// Ce qui s'affiche à côté de l'icône dans la barre de menus.
 enum MenuBarDisplay: String, Codable, CaseIterable {
     case iconOnly
@@ -34,6 +61,7 @@ final class AppSettings: ObservableObject {
     /// Verre utilisé par défaut (action des notifications).
     @Published var defaultGlassID: UUID? { didSet { save() } }
     @Published var menuBarDisplay: MenuBarDisplay { didSet { save() } }
+    @Published var volumeUnit: VolumeUnit { didSet { save() } }
     @Published var soundEnabled: Bool { didSet { save() } }
 
     private let defaults: UserDefaults
@@ -48,6 +76,7 @@ final class AppSettings: ObservableObject {
         glasses = stored.glasses
         defaultGlassID = stored.defaultGlassID ?? stored.glasses.first(where: { $0.milliliters == 250 })?.id
         menuBarDisplay = stored.menuBarDisplay
+        volumeUnit = stored.volumeUnit
         soundEnabled = stored.soundEnabled
         isLoading = false
     }
@@ -100,6 +129,7 @@ final class AppSettings: ObservableObject {
         var glasses: [GlassSize] = GlassSize.defaults
         var defaultGlassID: UUID?
         var menuBarDisplay: MenuBarDisplay = .iconOnly
+        var volumeUnit: VolumeUnit = .centiliters
         var soundEnabled: Bool = true
 
         init() {}
@@ -113,6 +143,7 @@ final class AppSettings: ObservableObject {
             glasses = (try? c.decode([GlassSize].self, forKey: .glasses)) ?? d.glasses
             defaultGlassID = try? c.decode(UUID.self, forKey: .defaultGlassID)
             menuBarDisplay = (try? c.decode(MenuBarDisplay.self, forKey: .menuBarDisplay)) ?? d.menuBarDisplay
+            volumeUnit = (try? c.decode(VolumeUnit.self, forKey: .volumeUnit)) ?? d.volumeUnit
             soundEnabled = (try? c.decode(Bool.self, forKey: .soundEnabled)) ?? d.soundEnabled
         }
     }
@@ -142,6 +173,7 @@ final class AppSettings: ObservableObject {
         stored.glasses = glasses
         stored.defaultGlassID = defaultGlassID
         stored.menuBarDisplay = menuBarDisplay
+        stored.volumeUnit = volumeUnit
         stored.soundEnabled = soundEnabled
         if let data = try? JSONEncoder().encode(stored) {
             defaults.set(data, forKey: Self.key)

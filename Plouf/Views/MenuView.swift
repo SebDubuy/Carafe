@@ -3,14 +3,14 @@ import SwiftUI
 /// Contenu de la fenêtre qui s'ouvre au clic sur l'icône.
 struct MenuView: View {
     @ObservedObject var store: HydrationStore
-    /// Quantité libre saisie, en centilitres.
-    @State private var customCentiliters: Int?
+    /// Quantité libre saisie, dans l'unité choisie (cl ou ml).
+    @State private var customAmount: Double?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             progressSection
             addButtons
-            customAmount
+            customAmountRow
             Divider()
             footer
         }
@@ -46,7 +46,7 @@ struct MenuView: View {
                     store.add(milliliters: glass.milliliters)
                 } label: {
                     VStack(spacing: 2) {
-                        Text("+ \(Formatters.glass(glass.milliliters))")
+                        Text("+ \(Formatters.glass(glass.milliliters, unit: unit))")
                             .font(.system(.title3, design: .rounded).weight(.semibold))
                         if !glass.name.isEmpty {
                             Text(glass.name)
@@ -65,17 +65,21 @@ struct MenuView: View {
 
     // MARK: - Quantité libre
 
-    private var customAmount: some View {
+    private var unit: VolumeUnit { store.settings.volumeUnit }
+
+    private var customAmountRow: some View {
         HStack(spacing: 6) {
             Text("Autre quantité")
                 .foregroundStyle(.secondary)
             Spacer()
-            TextField("40", value: $customCentiliters, format: .number)
+            TextField("", value: $customAmount, format: .number.grouping(.never),
+                      prompt: Text(unit == .centiliters ? "40" : "400"))
+                .labelsHidden()
                 .textFieldStyle(.roundedBorder)
                 .multilineTextAlignment(.trailing)
-                .frame(width: 56)
+                .frame(width: 60)
                 .onSubmit(addCustomAmount)
-            Text("cl")
+            Text(unit.symbol)
                 .foregroundStyle(.secondary)
             Button("Ajouter", action: addCustomAmount)
                 .disabled(!isCustomAmountValid)
@@ -83,15 +87,19 @@ struct MenuView: View {
         .font(.callout)
     }
 
-    private var isCustomAmountValid: Bool {
-        guard let cl = customCentiliters else { return false }
-        return AppSettings.glassRange.contains(cl * 10)
+    /// Quantité libre convertie en ml, si elle est dans les bornes autorisées.
+    private var customMilliliters: Int? {
+        guard let value = customAmount else { return nil }
+        let ml = unit.milliliters(from: value)
+        return AppSettings.glassRange.contains(ml) ? ml : nil
     }
 
+    private var isCustomAmountValid: Bool { customMilliliters != nil }
+
     private func addCustomAmount() {
-        guard isCustomAmountValid, let cl = customCentiliters else { return }
-        store.add(milliliters: cl * 10)
-        customCentiliters = nil
+        guard let ml = customMilliliters else { return }
+        store.add(milliliters: ml)
+        customAmount = nil
     }
 
     // MARK: - Bas du menu

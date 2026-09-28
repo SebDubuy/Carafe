@@ -46,6 +46,16 @@ final class AppSettingsTests: XCTestCase {
         XCTAssertEqual(settings.defaultGlassID, settings.glasses.first?.id)
     }
 
+    func testConversionUnites() {
+        XCTAssertEqual(VolumeUnit.centiliters.milliliters(from: 50), 500)
+        XCTAssertEqual(VolumeUnit.milliliters.milliliters(from: 500), 500)
+        XCTAssertEqual(VolumeUnit.centiliters.value(fromMilliliters: 750), 75)
+        let settings = AppSettings(defaults: defaults)
+        XCTAssertEqual(settings.volumeUnit, .centiliters)
+        settings.volumeUnit = .milliliters
+        XCTAssertEqual(AppSettings(defaults: defaults).volumeUnit, .milliliters)
+    }
+
     func testFormatBarreEnPourcentage() {
         XCTAssertEqual(Formatters.percent(0.6), "60\u{202F}%")
     }
