@@ -5,10 +5,13 @@ import SwiftUI
 /// le fond soit le même partout, comme dans le menu.
 struct SettingsView: View {
     @ObservedObject var settings: AppSettings
+    @ObservedObject var scheduler: ReminderScheduler
 
     private enum Tab: Hashable {
         case general
         case glasses
+        case reminders
+        case debug
     }
 
     @State private var tab: Tab = .general
@@ -26,6 +29,10 @@ struct SettingsView: View {
                         GeneralSettingsView(settings: settings)
                     case .glasses:
                         GlassesSettingsView(settings: settings)
+                    case .reminders:
+                        RemindersSettingsView(settings: settings, notifications: scheduler.notifications)
+                    case .debug:
+                        DebugView(settings: settings, scheduler: scheduler)
                     }
                 }
                 .padding(.horizontal, 20)
@@ -50,6 +57,14 @@ struct SettingsView: View {
                     .scaledToFit()
                     .frame(width: 26, height: 26)
             } action: { tab = .glasses }
+            TabButton(title: "Rappels", isSelected: tab == .reminders) {
+                Image(systemName: "bell")
+            } action: { tab = .reminders }
+            if settings.debugMode {
+                TabButton(title: "Debug", isSelected: tab == .debug) {
+                    Image(systemName: "ladybug")
+                } action: { tab = .debug }
+            }
         }
     }
 }
@@ -87,7 +102,7 @@ private struct TabButton<Icon: View>: View {
 // MARK: - Éléments communs
 
 /// Carte en verre qui regroupe des réglages, avec un titre au-dessus.
-private struct GlassCard<Content: View>: View {
+struct GlassCard<Content: View>: View {
     let title: LocalizedStringKey?
     @ViewBuilder let content: Content
 
@@ -122,7 +137,7 @@ private struct GlassCard<Content: View>: View {
 }
 
 /// Petite note grise sous un réglage.
-private struct Caption: View {
+struct Caption: View {
     let text: LocalizedStringKey
 
     init(_ text: LocalizedStringKey) {

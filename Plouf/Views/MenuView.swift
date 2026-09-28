@@ -3,6 +3,7 @@ import SwiftUI
 /// Contenu de la fenêtre qui s'ouvre au clic sur l'icône.
 struct MenuView: View {
     @ObservedObject var store: HydrationStore
+    let scheduler: ReminderScheduler
     @Environment(\.colorScheme) private var colorScheme
     /// Quantité libre saisie, dans l'unité choisie (cl ou ml).
     @State private var customAmount: Double?
@@ -152,7 +153,11 @@ struct MenuView: View {
     private var footer: some View {
         HStack(spacing: 14) {
             Button("Réglages…") {
-                SettingsWindowController.shared.show(settings: store.settings)
+                // Option + clic : mode debug caché.
+                if NSEvent.modifierFlags.contains(.option) {
+                    store.settings.debugMode = true
+                }
+                SettingsWindowController.shared.show(scheduler: scheduler)
             }
             Spacer()
             Button("Quitter") {

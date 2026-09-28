@@ -36,6 +36,17 @@ enum Formatters {
         return formatter.string(from: NSNumber(value: value)) ?? ""
     }
 
+    /// Durée : 45 → « 45 min », 60 → « 1 h », 90 → « 1 h 30 »
+    static func duration(minutes: Int) -> String {
+        let hours = minutes / 60
+        let rest = minutes % 60
+        switch (hours, rest) {
+        case (0, _): return "\(rest) min"
+        case (_, 0): return "\(hours) h"
+        default: return "\(hours) h \(String(format: "%02d", rest))"
+        }
+    }
+
     /// 0.6 → « 60 % » (espace fine insécable avant le signe, à la française)
     static func percent(_ fraction: Double) -> String {
         "\(Int((fraction * 100).rounded()))\u{202F}%"

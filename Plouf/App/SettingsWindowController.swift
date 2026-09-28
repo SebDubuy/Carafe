@@ -11,9 +11,10 @@ final class SettingsWindowController {
 
     private var window: NSWindow?
 
-    func show(settings: AppSettings) {
+    func show(scheduler: ReminderScheduler) {
         if window == nil {
-            let window = NSWindow(contentViewController: NSHostingController(rootView: SettingsView(settings: settings)))
+            let root = SettingsView(settings: scheduler.settingsForUI, scheduler: scheduler)
+            let window = NSWindow(contentViewController: NSHostingController(rootView: root))
             // Barre de titre transparente et contenu dessous : le fond bleuté couvre toute la
             // fenêtre ; seuls les boutons rouge / orange / vert restent visibles.
             window.styleMask = [.titled, .closable, .miniaturizable, .fullSizeContentView]

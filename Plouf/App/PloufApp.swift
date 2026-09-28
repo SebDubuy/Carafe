@@ -2,13 +2,14 @@ import SwiftUI
 
 @main
 struct PloufApp: App {
-    @StateObject private var store = HydrationStore(settings: AppSettings())
+    /// Les objets de l'app vivent dans l'AppDelegate, qui reçoit aussi les actions des notifications.
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     var body: some Scene {
         MenuBarExtra {
-            MenuView(store: store)
+            MenuView(store: appDelegate.store, scheduler: appDelegate.scheduler)
         } label: {
-            MenuBarLabel(store: store)
+            MenuBarLabel(store: appDelegate.store)
         }
         .menuBarExtraStyle(.window)
     }

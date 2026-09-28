@@ -35,6 +35,17 @@ enum VolumeUnit: String, Codable, CaseIterable {
     }
 }
 
+/// Délai du rappel d'inactivité.
+enum InactivityDelay: Int, Codable, CaseIterable, Identifiable {
+    case min45 = 45
+    case hour1 = 60
+    case hour1min30 = 90
+    case hour2 = 120
+
+    var id: Int { rawValue }
+    var minutes: Int { rawValue }
+}
+
 /// Ce qui s'affiche à côté de l'icône dans la barre de menus.
 enum MenuBarDisplay: String, Codable, CaseIterable {
     case iconOnly
@@ -64,6 +75,20 @@ final class AppSettings: ObservableObject {
     @Published var volumeUnit: VolumeUnit { didSet { save() } }
     @Published var soundEnabled: Bool { didSet { save() } }
 
+    // Rappels
+    @Published var inactivityReminderEnabled: Bool { didSet { save() } }
+    @Published var inactivityDelay: InactivityDelay { didSet { save() } }
+    @Published var paceReminderEnabled: Bool { didSet { save() } }
+    /// Plage horaire active (heures pleines) : aucun rappel en dehors.
+    @Published var activeStartHour: Int { didSet { save() } }
+    @Published var activeEndHour: Int { didSet { save() } }
+
+    // Mode debug (jamais enregistré) : activé par Option + clic sur « Réglages… »
+    // ou l'argument de lancement `--debug`.
+    @Published var debugMode = ProcessInfo.processInfo.arguments.contains("--debug")
+    /// En debug : tous les délais de rappel ramenés à 1 minute.
+    @Published var debugShortDelays = false
+
     private let defaults: UserDefaults
     private var isLoading = true
 
@@ -78,6 +103,11 @@ final class AppSettings: ObservableObject {
         menuBarDisplay = stored.menuBarDisplay
         volumeUnit = stored.volumeUnit
         soundEnabled = stored.soundEnabled
+        inactivityReminderEnabled = stored.inactivityReminderEnabled
+        inactivityDelay = stored.inactivityDelay
+        paceReminderEnabled = stored.paceReminderEnabled
+        activeStartHour = stored.activeStartHour
+        activeEndHour = stored.activeEndHour
         isLoading = false
     }
 
@@ -131,6 +161,11 @@ final class AppSettings: ObservableObject {
         var menuBarDisplay: MenuBarDisplay = .iconOnly
         var volumeUnit: VolumeUnit = .centiliters
         var soundEnabled: Bool = true
+        var inactivityReminderEnabled: Bool = true
+        var inactivityDelay: InactivityDelay = .hour1min30
+        var paceReminderEnabled: Bool = true
+        var activeStartHour: Int = 9
+        var activeEndHour: Int = 19
 
         init() {}
 
@@ -145,6 +180,11 @@ final class AppSettings: ObservableObject {
             menuBarDisplay = (try? c.decode(MenuBarDisplay.self, forKey: .menuBarDisplay)) ?? d.menuBarDisplay
             volumeUnit = (try? c.decode(VolumeUnit.self, forKey: .volumeUnit)) ?? d.volumeUnit
             soundEnabled = (try? c.decode(Bool.self, forKey: .soundEnabled)) ?? d.soundEnabled
+            inactivityReminderEnabled = (try? c.decode(Bool.self, forKey: .inactivityReminderEnabled)) ?? d.inactivityReminderEnabled
+            inactivityDelay = (try? c.decode(InactivityDelay.self, forKey: .inactivityDelay)) ?? d.inactivityDelay
+            paceReminderEnabled = (try? c.decode(Bool.self, forKey: .paceReminderEnabled)) ?? d.paceReminderEnabled
+            activeStartHour = (try? c.decode(Int.self, forKey: .activeStartHour)) ?? d.activeStartHour
+            activeEndHour = (try? c.decode(Int.self, forKey: .activeEndHour)) ?? d.activeEndHour
         }
     }
 
@@ -175,6 +215,11 @@ final class AppSettings: ObservableObject {
         stored.menuBarDisplay = menuBarDisplay
         stored.volumeUnit = volumeUnit
         stored.soundEnabled = soundEnabled
+        stored.inactivityReminderEnabled = inactivityReminderEnabled
+        stored.inactivityDelay = inactivityDelay
+        stored.paceReminderEnabled = paceReminderEnabled
+        stored.activeStartHour = activeStartHour
+        stored.activeEndHour = activeEndHour
         if let data = try? JSONEncoder().encode(stored) {
             defaults.set(data, forKey: Self.key)
         }
