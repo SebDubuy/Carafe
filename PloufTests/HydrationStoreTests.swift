@@ -13,7 +13,9 @@ final class HydrationStoreTests: XCTestCase {
     }
 
     private func makeStore() -> HydrationStore {
-        HydrationStore(persistence: Persistence(defaults: defaults), now: { [unowned self] in currentDate })
+        HydrationStore(settings: AppSettings(defaults: defaults),
+                       persistence: Persistence(defaults: defaults),
+                       now: { [unowned self] in currentDate })
     }
 
     func testAjoutEtProgression() {

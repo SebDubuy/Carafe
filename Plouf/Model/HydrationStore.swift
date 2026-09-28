@@ -1,29 +1,36 @@
+import Combine
 import Foundation
 
-/// État central de l'app : les verres bus, l'objectif et les tailles de verre.
-/// Toutes les vues (menu, icône, réglages) observent cet objet.
+/// État central de l'app : les verres bus et la progression par rapport à l'objectif.
+/// Toutes les vues (menu, icône) observent cet objet.
 @MainActor
 final class HydrationStore: ObservableObject {
     /// Tous les verres enregistrés (aujourd'hui + historique).
     @Published private(set) var entries: [DrinkEntry]
-    @Published var glasses: [GlassSize] {
-        didSet { persistence.saveGlasses(glasses) }
-    }
-    /// Objectif quotidien en ml (fixe pour l'instant, réglable à l'étape 2).
-    @Published var goalMilliliters: Int = 2000
+    /// Réglages (objectif, tailles de verre…).
+    let settings: AppSettings
+
+    /// Objectif quotidien en ml, tiré des réglages.
+    var goalMilliliters: Int { settings.goalMilliliters }
 
     private let persistence: Persistence
     private let calendar: Calendar
     private let now: () -> Date
+    private var settingsObserver: AnyCancellable?
 
-    init(persistence: Persistence = Persistence(),
+    init(settings: AppSettings,
+         persistence: Persistence = Persistence(),
          calendar: Calendar = .current,
          now: @escaping () -> Date = Date.init) {
+        self.settings = settings
         self.persistence = persistence
         self.calendar = calendar
         self.now = now
         self.entries = persistence.loadEntries()
-        self.glasses = persistence.loadGlasses() ?? GlassSize.defaults
+        // Un changement d'objectif doit aussi redessiner l'icône et le menu.
+        settingsObserver = settings.objectWillChange.sink { [weak self] _ in
+            self?.objectWillChange.send()
+        }
     }
 
     // MARK: - Lecture

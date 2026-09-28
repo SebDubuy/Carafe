@@ -43,6 +43,10 @@ Code propre et découpé en responsabilités claires :
 - Mini historique des 7 derniers jours (petites barres), avec indication des jours où l'objectif a été atteint.
 - Petit son « plouf » discret à chaque verre ajouté (désactivable).
 - Petite animation d'éclaboussure quand l'objectif du jour est atteint.
+- **Quantité libre** : petit champ pour ajouter une quantité ponctuelle (ex. 40 cl) sans créer de verre.
+- **Liste des verres du jour** : voir les verres bus aujourd'hui et pouvoir supprimer un verre précis.
+- **Série de jours** : « 🔥 5 jours d'affilée » quand l'objectif est atteint plusieurs jours de suite.
+- **Statistiques** : moyenne de la semaine, meilleure journée, heure où l'on boit le plus.
 - Accès aux réglages + bouton Quitter.
 
 ### Réglages
@@ -87,6 +91,8 @@ Prévoir un mode debug caché (par exemple Option + clic sur « Réglages », ou
 - permet de simuler un changement de jour,
 - affiche l'état interne des rappels (prochain rappel prévu, raison).
 
+Hors périmètre (écarté) : types de boisson (on reste sur l'eau), raccourci clavier global, export CSV.
+
 ## Conventions
 
 - Formats français : virgule décimale, « cl » et « L ».
@@ -99,9 +105,9 @@ Prévoir un mode debug caché (par exemple Option + clic sur « Réglages », ou
 1. Avant de coder, proposer un plan court (structure des fichiers + étapes) et attendre ma validation.
 2. Construire étape par étape, en commençant par une version minimale qui marche :
    1. icône + ajout de verre + objectif fixe,
-   2. réglages (objectif, tailles de verre, affichage),
-   3. remise à zéro quotidienne + historique,
+   2. réglages (objectif, tailles de verre, affichage) + quantité libre,
+   3. remise à zéro quotidienne + historique + liste des verres du jour + série de jours,
    4. rappels + actions dans les notifications,
-   5. son, animation et finitions.
+   5. son, animation, statistiques et finitions.
 3. À chaque étape, expliquer comment tester.
 4. Si un choix technique a plusieurs options valables, me demander plutôt que trancher seul.
