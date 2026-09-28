@@ -1,5 +1,5 @@
 import XCTest
-@testable import Plouf
+@testable import Glouglou
 
 final class ReminderEngineTests: XCTestCase {
     private var calendar: Calendar = {

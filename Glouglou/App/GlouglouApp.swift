@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct PloufApp: App {
+struct GlouglouApp: App {
     /// Les objets de l'app vivent dans l'AppDelegate, qui reçoit aussi les actions des notifications.
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 

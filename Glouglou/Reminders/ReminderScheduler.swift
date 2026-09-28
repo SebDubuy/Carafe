@@ -142,7 +142,7 @@ final class ReminderScheduler: ObservableObject {
     func addDefaultGlassFromNotification() {
         guard let glass = settings.defaultGlass else { return }
         store.add(milliliters: glass.milliliters)
-        SoundPlayer.playPlouf(if: settings.soundEnabled)
+        SoundPlayer.playDrinkSound(if: settings.soundEnabled)
     }
 
     /// « Rappeler dans 15 min ».

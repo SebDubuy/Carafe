@@ -1,6 +1,6 @@
 import AppKit
 
-/// Dessine l'icône de Plouf : une goutte d'eau qui se remplit de bleu selon la progression.
+/// Dessine l'icône de Glouglou : une goutte d'eau qui se remplit de bleu selon la progression.
 /// L'image de la barre de menus n'est pas en mode « template » (sinon elle serait monochrome) :
 /// le contour est donc coloré à la main selon l'apparence de la barre (claire ou sombre).
 enum DropIconRenderer {
@@ -32,7 +32,7 @@ enum DropIconRenderer {
             return true
         }
         image.isTemplate = false
-        image.accessibilityDescription = String(localized: "Plouf")
+        image.accessibilityDescription = String(localized: "Glouglou")
         cache[key] = image
         return image
     }

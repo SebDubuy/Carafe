@@ -10,15 +10,15 @@ enum ReminderMessages {
     /// Rappel d'inactivité (et rappel reporté).
     static func inactivity() -> Message {
         let messages = [
-            Message(title: String(localized: "Plouf ?"),
+            Message(title: String(localized: "Glouglou ?"),
                     body: String(localized: "Ça fait un moment… Une petite gorgée ?")),
             Message(title: String(localized: "Ton verre s'ennuie"),
                     body: String(localized: "Il n'attend que toi.")),
             Message(title: String(localized: "Une petite gorgée ?"),
-                    body: String(localized: "Juste de quoi faire plouf.")),
+                    body: String(localized: "Juste de quoi faire glouglou.")),
             Message(title: String(localized: "Pause eau ?"),
                     body: String(localized: "Deux minutes, un verre, et c'est reparti.")),
-            Message(title: String(localized: "Glou glou ?"),
+            Message(title: String(localized: "Hop, un verre ?"),
                     body: String(localized: "Ton corps te dira merci (en silence).")),
             Message(title: String(localized: "Coucou, c'est l'eau"),
                     body: String(localized: "On ne s'est pas vus depuis un moment.")),

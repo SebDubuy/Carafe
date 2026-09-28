@@ -1,7 +1,7 @@
 import Foundation
 import ServiceManagement
 
-/// Lancement de Plouf à l'ouverture de session, via `SMAppService`.
+/// Lancement de Glouglou à l'ouverture de session, via `SMAppService`.
 /// L'état est lu directement auprès du système (l'utilisateur peut aussi le changer
 /// dans Réglages Système › Général › Ouverture).
 enum LaunchAtLogin {
@@ -19,7 +19,7 @@ enum LaunchAtLogin {
                 try SMAppService.mainApp.unregister()
             }
         } catch {
-            NSLog("Plouf – lancement au démarrage : \(error.localizedDescription)")
+            NSLog("Glouglou – lancement au démarrage : \(error.localizedDescription)")
         }
         return isEnabled
     }

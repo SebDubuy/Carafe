@@ -1,14 +1,14 @@
 import Foundation
 import UserNotifications
 
-/// Envoi des notifications Plouf : autorisation, actions, et un seul identifiant
+/// Envoi des notifications Glouglou : autorisation, actions, et un seul identifiant
 /// pour que chaque rappel remplace le précédent au lieu de s'empiler.
 @MainActor
 final class NotificationManager: ObservableObject {
-    static let reminderIdentifier = "plouf.reminder"
-    static let categoryIdentifier = "plouf.reminder.category"
-    static let addActionIdentifier = "plouf.action.add"
-    static let snoozeActionIdentifier = "plouf.action.snooze"
+    static let reminderIdentifier = "glouglou.reminder"
+    static let categoryIdentifier = "glouglou.reminder.category"
+    static let addActionIdentifier = "glouglou.action.add"
+    static let snoozeActionIdentifier = "glouglou.action.snooze"
 
     @Published private(set) var authorization: UNAuthorizationStatus = .notDetermined
 

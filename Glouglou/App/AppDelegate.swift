@@ -22,7 +22,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
 
     // MARK: - UNUserNotificationCenterDelegate
 
-    /// Plouf vit dans la barre de menus, donc elle est toujours « au premier plan » :
+    /// Glouglou vit dans la barre de menus, donc elle est toujours « au premier plan » :
     /// sans ça, macOS n'afficherait pas nos rappels.
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter,
                                             willPresent notification: UNNotification,

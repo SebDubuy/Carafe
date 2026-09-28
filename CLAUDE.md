@@ -1,8 +1,8 @@
-# Plouf — App macOS de suivi d'hydratation
+# Glouglou — App macOS de suivi d'hydratation
 
 ## Présentation du projet
 
-Plouf est une petite app macOS qui vit dans la barre de menus et aide à boire assez d'eau dans la journée. On ajoute ses verres en un clic, l'icône (un verre) se remplit au fil de la journée, et l'app envoie des rappels quand ça fait longtemps qu'on n'a rien bu ou qu'on est en retard sur son rythme.
+Glouglou est une petite app macOS qui vit dans la barre de menus et aide à boire assez d'eau dans la journée. On ajoute ses verres en un clic, l'icône (une goutte) se remplit au fil de la journée, et l'app envoie des rappels quand ça fait longtemps qu'on n'a rien bu ou qu'on est en retard sur son rythme.
 
 Ton de l'app : léger, un peu espiègle, jamais culpabilisant. Interface entièrement en français.
 
@@ -41,7 +41,7 @@ Code propre et découpé en responsabilités claires :
 - Bouton « Annuler le dernier ajout ».
 - Heure du dernier verre (« Dernier verre il y a 45 min »).
 - Mini historique des 7 derniers jours (petites barres), avec indication des jours où l'objectif a été atteint.
-- Petit son « plouf » discret à chaque verre ajouté (désactivable).
+- Petit son « glouglou » discret à chaque verre ajouté (désactivable).
 - Petite animation d'éclaboussure quand l'objectif du jour est atteint.
 - **Quantité libre** : petit champ pour ajouter une quantité ponctuelle (ex. 40 cl) sans créer de verre.
 - **Liste des verres du jour** : voir les verres bus aujourd'hui et pouvoir supprimer un verre précis.
@@ -81,7 +81,7 @@ Règles communes :
 - Pas de rappel quand l'écran est verrouillé ou le Mac en veille (écouter `com.apple.screenIsLocked` / `com.apple.screenIsUnlocked` et les notifications de veille/réveil de `NSWorkspace`). Au retour : au maximum une seule notification, et seulement si elle est toujours pertinente.
 - Ne jamais empiler les notifications : réutiliser le même identifiant pour remplacer la précédente.
 - Actions directement dans la notification : « + 25 cl » (ou la taille du verre par défaut) et « Rappeler dans 15 min ». Un ajout depuis la notification met à jour l'icône immédiatement.
-- Textes variés tirés au hasard, dans l'esprit de l'app, par exemple : « Plouf ? Ça fait un moment… », « Ton verre s'ennuie », « Une petite gorgée ? ». Jamais culpabilisants.
+- Textes variés tirés au hasard, dans l'esprit de l'app, par exemple : « Glouglou ? Ça fait un moment… », « Ton verre s'ennuie », « Une petite gorgée ? ». Jamais culpabilisants.
 
 ## Mode debug
 

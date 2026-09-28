@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Couleurs et styles « eau » partagés par les vues de Plouf.
+/// Couleurs et styles « eau » partagés par les vues de Glouglou.
 enum Theme {
     /// Bleu de l'eau (le même que dans l'icône de la barre de menus).
     static let water = Color(red: 0.18, green: 0.56, blue: 1.0)

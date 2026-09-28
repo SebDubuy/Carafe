@@ -20,7 +20,7 @@ final class SettingsWindowController {
             window.styleMask = [.titled, .closable, .miniaturizable, .fullSizeContentView]
             window.titlebarAppearsTransparent = true
             window.titleVisibility = .hidden
-            window.title = String(localized: "Réglages de Plouf")
+            window.title = String(localized: "Réglages de Glouglou")
             window.isMovableByWindowBackground = true
             // Fenêtre transparente : c'est le verre liquide du fond qui fait tout le rendu.
             window.isOpaque = false

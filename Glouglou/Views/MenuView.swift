@@ -121,10 +121,10 @@ struct MenuView: View {
         customAmount = nil
     }
 
-    /// Ajoute un verre et joue le « plouf » si le son est activé.
+    /// Ajoute un verre et joue le petit son si le son est activé.
     private func add(_ milliliters: Int) {
         store.add(milliliters: milliliters)
-        SoundPlayer.playPlouf(if: store.settings.soundEnabled)
+        SoundPlayer.playDrinkSound(if: store.settings.soundEnabled)
     }
 
     // MARK: - Annulation
