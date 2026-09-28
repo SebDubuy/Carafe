@@ -40,6 +40,8 @@ final class SettingsWindowController {
     private func tab<Content: View>(_ label: String, image: NSImage?, height: CGFloat,
                                     view: Content) -> NSTabViewItem {
         let hosting = NSHostingController(rootView: view.frame(width: 460, height: height))
+        // Le titre de l'onglet sélectionné devient le titre de la fenêtre.
+        hosting.title = label
         let item = NSTabViewItem(viewController: hosting)
         item.label = label
         item.image = image

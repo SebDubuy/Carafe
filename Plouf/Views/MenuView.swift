@@ -11,6 +11,7 @@ struct MenuView: View {
             progressSection
             addButtons
             customAmountRow
+            undoRow
             Divider()
             footer
         }
@@ -102,18 +103,34 @@ struct MenuView: View {
         customAmount = nil
     }
 
+    // MARK: - Annulation
+
+    private var undoRow: some View {
+        Button {
+            store.undoLast()
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "arrow.uturn.backward")
+                Text("Annuler le dernier ajout")
+                if let last = store.todayEntries.last {
+                    Text("(\(Formatters.glass(last.milliliters, unit: unit)))")
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .buttonStyle(.borderless)
+        .font(.callout)
+        .disabled(!store.canUndo)
+    }
+
     // MARK: - Bas du menu
 
     private var footer: some View {
         HStack(spacing: 14) {
-            Button("Annuler le dernier ajout") {
-                store.undoLast()
-            }
-            .disabled(!store.canUndo)
-            Spacer()
             Button("Réglages…") {
                 SettingsWindowController.shared.show(settings: store.settings)
             }
+            Spacer()
             Button("Quitter") {
                 NSApp.terminate(nil)
             }
