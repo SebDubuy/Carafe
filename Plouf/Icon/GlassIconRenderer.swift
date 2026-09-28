@@ -36,17 +36,41 @@ enum GlassIconRenderer {
         return image
     }
 
+    /// Verre à moitié plein en mode « template » (monochrome, adapté au thème par macOS),
+    /// pour l'onglet « Verres » des réglages.
+    static let templateGlass: NSImage = {
+        let image = NSImage(size: size, flipped: false) { rect in
+            draw(level: levels / 2, lineColor: .black,
+                 waterColor: NSColor.black.withAlphaComponent(0.45),
+                 surfaceColor: NSColor.black.withAlphaComponent(0.25), in: rect)
+            return true
+        }
+        image.isTemplate = true
+        return image
+    }()
+
     // MARK: - Dessin
 
-    /// Dessine le verre dans `rect` (les coordonnées sont pensées pour 18 × 18 puis mises à l'échelle).
+    /// Eau bleue de l'icône en couleur.
+    private static let blueWater = NSColor(srgbRed: 0.18, green: 0.56, blue: 1.0, alpha: 1)
+
+    /// Dessine le verre en couleur (eau bleue, contour selon la barre de menus).
     static func draw(level: Int, darkMenuBar: Bool, in rect: NSRect) {
+        draw(level: level,
+             lineColor: darkMenuBar ? .white : NSColor(white: 0.12, alpha: 1),
+             waterColor: blueWater,
+             surfaceColor: blueWater.blended(withFraction: 0.35, of: .white) ?? blueWater,
+             in: rect)
+    }
+
+    /// Dessine le verre dans `rect` (les coordonnées sont pensées pour 18 × 18 puis mises à l'échelle).
+    static func draw(level: Int, lineColor: NSColor, waterColor: NSColor, surfaceColor: NSColor,
+                     in rect: NSRect) {
         guard let context = NSGraphicsContext.current?.cgContext else { return }
         context.saveGState()
         context.translateBy(x: rect.minX, y: rect.minY)
         context.scaleBy(x: rect.width / size.width, y: rect.height / size.height)
 
-        let lineColor = darkMenuBar ? NSColor.white : NSColor(white: 0.12, alpha: 1)
-        let waterColor = NSColor(srgbRed: 0.18, green: 0.56, blue: 1.0, alpha: 1)
         let lineWidth: CGFloat = 1.3
 
         // Dimensions du verre : un gobelet légèrement évasé, aux flancs bombés et au fond arrondi.
@@ -78,7 +102,7 @@ enum GlassIconRenderer {
             let surfaceHeight = rimHeight * 0.75 * (halfWidth / rimHalfWidth)
             let surface = NSBezierPath(ovalIn: NSRect(x: centerX - halfWidth, y: waterY - surfaceHeight / 2,
                                                      width: halfWidth * 2, height: surfaceHeight))
-            waterColor.blended(withFraction: 0.35, of: .white)?.setFill()
+            surfaceColor.setFill()
             surface.fill()
             NSGraphicsContext.restoreGraphicsState()
         }

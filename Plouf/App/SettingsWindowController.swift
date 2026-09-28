@@ -16,9 +16,13 @@ final class SettingsWindowController {
         if window == nil {
             let tabs = NSTabViewController()
             tabs.tabStyle = .toolbar
-            tabs.addTabViewItem(tab(String(localized: "Général"), symbol: "gearshape", height: 330,
+            tabs.addTabViewItem(tab(String(localized: "Général"),
+                                    image: NSImage(systemSymbolName: "gearshape", accessibilityDescription: nil),
+                                    height: 330,
                                     view: GeneralSettingsView(settings: settings)))
-            tabs.addTabViewItem(tab(String(localized: "Verres"), symbol: "cup.and.saucer", height: 500,
+            tabs.addTabViewItem(tab(String(localized: "Verres"),
+                                    image: GlassIconRenderer.templateGlass,
+                                    height: 500,
                                     view: GlassesSettingsView(settings: settings)))
 
             let window = NSWindow(contentViewController: tabs)
@@ -33,12 +37,12 @@ final class SettingsWindowController {
     }
 
     /// Chaque onglet a une taille fixe : la fenêtre s'y adapte en changeant d'onglet.
-    private func tab<Content: View>(_ label: String, symbol: String, height: CGFloat,
+    private func tab<Content: View>(_ label: String, image: NSImage?, height: CGFloat,
                                     view: Content) -> NSTabViewItem {
         let hosting = NSHostingController(rootView: view.frame(width: 460, height: height))
         let item = NSTabViewItem(viewController: hosting)
         item.label = label
-        item.image = NSImage(systemSymbolName: symbol, accessibilityDescription: label)
+        item.image = image
         return item
     }
 }
