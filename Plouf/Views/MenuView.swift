@@ -17,23 +17,38 @@ struct MenuView: View {
         }
         .padding(16)
         .frame(width: 300)
+        .background(Theme.menuBackground)
     }
 
     // MARK: - Progression du jour
 
     private var progressSection: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text("Aujourd'hui")
-                .font(.headline)
-            ProgressView(value: store.progress)
-                .tint(.blue)
-            Text("\(Formatters.litersValue(store.todayTotal)) L sur \(Formatters.liters(store.goalMilliliters))")
-                .font(.system(.title3, design: .rounded).weight(.semibold))
-                .monospacedDigit()
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 6) {
+                Image(systemName: "drop.fill")
+                    .foregroundStyle(Theme.waterGradient)
+                Text("Aujourd'hui")
+                    .font(.headline)
+                Spacer()
+                Text(Formatters.percent(Double(store.todayTotal) / Double(max(store.goalMilliliters, 1))))
+                    .font(.system(.callout, design: .rounded).weight(.semibold))
+                    .foregroundStyle(Theme.water)
+                    .monospacedDigit()
+            }
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                Text("\(Formatters.litersValue(store.todayTotal)) L")
+                    .font(.system(size: 30, weight: .bold, design: .rounded))
+                    .foregroundStyle(Theme.waterGradient)
+                Text("sur \(Formatters.liters(store.goalMilliliters))")
+                    .font(.system(.title3, design: .rounded))
+                    .foregroundStyle(.secondary)
+            }
+            .monospacedDigit()
+            WaterProgressBar(progress: store.progress)
             if store.goalReached {
                 Text("Objectif atteint, bravo !")
                     .font(.callout)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Theme.water)
             }
         }
     }
@@ -44,7 +59,7 @@ struct MenuView: View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
             ForEach(store.settings.glasses) { glass in
                 Button {
-                    store.add(milliliters: glass.milliliters)
+                    add(glass.milliliters)
                 } label: {
                     VStack(spacing: 2) {
                         Text("+ \(Formatters.glass(glass.milliliters, unit: unit))")
@@ -56,10 +71,8 @@ struct MenuView: View {
                                 .lineLimit(1)
                         }
                     }
-                    .frame(maxWidth: .infinity, minHeight: 44)
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.large)
+                .buttonStyle(WaterButtonStyle())
             }
         }
     }
@@ -83,6 +96,8 @@ struct MenuView: View {
             Text(unit.symbol)
                 .foregroundStyle(.secondary)
             Button("Ajouter", action: addCustomAmount)
+                .buttonStyle(.borderedProminent)
+                .tint(Theme.water)
                 .disabled(!isCustomAmountValid)
         }
         .font(.callout)
@@ -99,8 +114,14 @@ struct MenuView: View {
 
     private func addCustomAmount() {
         guard let ml = customMilliliters else { return }
-        store.add(milliliters: ml)
+        add(ml)
         customAmount = nil
+    }
+
+    /// Ajoute un verre et joue le « plouf » si le son est activé.
+    private func add(_ milliliters: Int) {
+        store.add(milliliters: milliliters)
+        SoundPlayer.playPlouf(if: store.settings.soundEnabled)
     }
 
     // MARK: - Annulation
@@ -111,6 +132,7 @@ struct MenuView: View {
         } label: {
             HStack(spacing: 6) {
                 Image(systemName: "arrow.uturn.backward")
+                    .foregroundStyle(Theme.water)
                 Text("Annuler le dernier ajout")
                 if let last = store.todayEntries.last {
                     Text("(\(Formatters.glass(last.milliliters, unit: unit)))")
