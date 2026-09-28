@@ -50,11 +50,11 @@ final class HydrationStoreTests: XCTestCase {
     }
 
     func testPaliersIcone() {
-        XCTAssertEqual(GlassIconRenderer.level(for: 0), 0)
-        XCTAssertEqual(GlassIconRenderer.level(for: 0.01), 1)
-        XCTAssertEqual(GlassIconRenderer.level(for: 0.5), 5)
-        XCTAssertEqual(GlassIconRenderer.level(for: 0.99), 9)
-        XCTAssertEqual(GlassIconRenderer.level(for: 1.4), 10)
+        XCTAssertEqual(DropIconRenderer.level(for: 0), 0)
+        XCTAssertEqual(DropIconRenderer.level(for: 0.01), 1)
+        XCTAssertEqual(DropIconRenderer.level(for: 0.5), 5)
+        XCTAssertEqual(DropIconRenderer.level(for: 0.99), 9)
+        XCTAssertEqual(DropIconRenderer.level(for: 1.4), 10)
     }
 
     func testFormats() {

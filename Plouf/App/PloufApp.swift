@@ -14,15 +14,15 @@ struct PloufApp: App {
     }
 }
 
-/// Ce qui s'affiche dans la barre de menus : le verre, et le texte optionnel à côté.
+/// Ce qui s'affiche dans la barre de menus : la goutte, et le texte optionnel à côté.
 private struct MenuBarLabel: View {
     @ObservedObject var store: HydrationStore
-    /// Apparence de la barre de menus, pour choisir la couleur du contour du verre.
+    /// Apparence de la barre de menus, pour choisir la couleur du contour de la goutte.
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         HStack(spacing: 4) {
-            Image(nsImage: GlassIconRenderer.image(progress: store.progress,
+            Image(nsImage: DropIconRenderer.image(progress: store.progress,
                                                    darkMenuBar: colorScheme == .dark))
             if let text {
                 Text(text)

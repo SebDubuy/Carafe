@@ -3,6 +3,7 @@ import SwiftUI
 /// Contenu de la fenêtre qui s'ouvre au clic sur l'icône.
 struct MenuView: View {
     @ObservedObject var store: HydrationStore
+    @Environment(\.colorScheme) private var colorScheme
     /// Quantité libre saisie, dans l'unité choisie (cl ou ml).
     @State private var customAmount: Double?
 
@@ -25,8 +26,9 @@ struct MenuView: View {
     private var progressSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 6) {
-                Image(systemName: "drop.fill")
-                    .foregroundStyle(Theme.waterGradient)
+                // Même goutte que dans la barre de menus, remplie selon la progression.
+                Image(nsImage: DropIconRenderer.image(progress: store.progress,
+                                                      darkMenuBar: colorScheme == .dark))
                 Text("Aujourd'hui")
                     .font(.headline)
                 Spacer()

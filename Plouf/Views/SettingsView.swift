@@ -44,7 +44,7 @@ struct SettingsView: View {
             } action: { tab = .general }
             TabButton(title: "Verres", isSelected: tab == .glasses) {
                 // Image dessinée en code : on l'agrandit à la taille des symboles système.
-                Image(nsImage: GlassIconRenderer.templateGlass)
+                Image(nsImage: DropIconRenderer.templateDrop)
                     .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
