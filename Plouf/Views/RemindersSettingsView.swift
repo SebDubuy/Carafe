@@ -4,10 +4,27 @@ import SwiftUI
 /// Onglet « Rappels » : plage horaire, rappel d'inactivité, rappel de rythme.
 struct RemindersSettingsView: View {
     @ObservedObject var settings: AppSettings
+    @ObservedObject var scheduler: ReminderScheduler
     @ObservedObject var notifications: NotificationManager
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
+            if settings.debugMode && settings.debugShortDelays {
+                GlassCard {
+                    Label("Mode debug : tous les délais sont ramenés à 1 minute.", systemImage: "ladybug.fill")
+                        .foregroundStyle(.orange)
+                }
+            }
+
+            GlassCard {
+                HStack {
+                    Image(systemName: "bell.badge")
+                        .foregroundStyle(Theme.waterLight)
+                    Text(nextReminderText)
+                    Spacer()
+                }
+            }
+
             if notifications.authorization == .denied {
                 GlassCard {
                     Label("Les notifications de Plouf sont désactivées.", systemImage: "bell.slash")
@@ -74,6 +91,23 @@ struct RemindersSettingsView: View {
                 .padding(.leading, 4)
         }
         .onAppear { notifications.refreshAuthorization() }
+    }
+
+    /// « Prochain rappel vers 21:34 », ou la raison s'il n'y en a pas de prévu aujourd'hui.
+    private var nextReminderText: String {
+        guard let decision = scheduler.decision else { return String(localized: "Calcul du prochain rappel…") }
+        if let date = decision.nextDate {
+            let calendar = Calendar.current
+            let time = date.formatted(date: .omitted, time: .shortened)
+            if calendar.isDateInToday(date) {
+                return String(localized: "Prochain rappel vers \(time)")
+            }
+            return String(localized: "Prochain rappel demain vers \(time)")
+        }
+        if scheduler.goalReachedToday {
+            return String(localized: "Objectif atteint : plus de rappel aujourd'hui 🎉")
+        }
+        return String(localized: "Aucun rappel prévu pour l'instant")
     }
 
     private func hourPicker(selection: Binding<Int>, range: ClosedRange<Int>) -> some View {

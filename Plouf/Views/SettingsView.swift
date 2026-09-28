@@ -30,7 +30,8 @@ struct SettingsView: View {
                     case .glasses:
                         GlassesSettingsView(settings: settings)
                     case .reminders:
-                        RemindersSettingsView(settings: settings, notifications: scheduler.notifications)
+                        RemindersSettingsView(settings: settings, scheduler: scheduler,
+                                              notifications: scheduler.notifications)
                     case .debug:
                         DebugView(settings: settings, scheduler: scheduler)
                     }

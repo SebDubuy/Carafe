@@ -35,6 +35,7 @@ final class ReminderScheduler: ObservableObject {
     private var settings: AppSettings { store.settings }
     /// Réglages, pour la fenêtre des réglages.
     var settingsForUI: AppSettings { store.settings }
+    var goalReachedToday: Bool { store.goalReached }
 
     /// Paramètres du moteur, tirés des réglages (tout à 1 minute en mode debug « délais courts »).
     var config: ReminderConfig {
