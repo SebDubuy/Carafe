@@ -22,7 +22,8 @@ final class AppSettings: ObservableObject {
     static let fixedGoalRange = 500...6000
     static let fixedGoalStep = 250
     static let weightRange = 30...200
-    static let glassRange = 10...2000
+    /// Contenance d'un verre en ml : de 1 cl à 5 L.
+    static let glassRange = 10...5000
 
     @Published var goalMode: GoalMode { didSet { save() } }
     /// Objectif fixe en ml.

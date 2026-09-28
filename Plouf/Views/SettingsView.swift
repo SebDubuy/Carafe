@@ -1,23 +1,8 @@
 import SwiftUI
 
-/// Fenêtre des réglages, en onglets.
-struct SettingsView: View {
-    @ObservedObject var settings: AppSettings
-
-    var body: some View {
-        TabView {
-            GeneralSettingsView(settings: settings)
-                .tabItem { Label("Général", systemImage: "gearshape") }
-            GlassesSettingsView(settings: settings)
-                .tabItem { Label("Verres", systemImage: "cup.and.saucer") }
-        }
-        .frame(width: 460, height: 400)
-    }
-}
-
 // MARK: - Onglet Général
 
-private struct GeneralSettingsView: View {
+struct GeneralSettingsView: View {
     @ObservedObject var settings: AppSettings
     @State private var launchAtLogin = LaunchAtLogin.isEnabled
 
@@ -72,7 +57,7 @@ private struct GeneralSettingsView: View {
 
 // MARK: - Onglet Verres
 
-private struct GlassesSettingsView: View {
+struct GlassesSettingsView: View {
     @ObservedObject var settings: AppSettings
 
     var body: some View {
@@ -88,7 +73,7 @@ private struct GlassesSettingsView: View {
             } header: {
                 Text("Tailles de verre")
             } footer: {
-                Text("L'étoile marque le verre par défaut, proposé dans les notifications.")
+                Text("Entre 1 et \(AppSettings.glassRange.upperBound / 10) cl. L'étoile marque le verre par défaut, proposé dans les notifications.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -128,13 +113,17 @@ private struct GlassRow: View {
             .buttonStyle(.borderless)
             .help(Text("Verre par défaut"))
 
-            TextField("Nom (facultatif)", text: $glass.name)
+            // Titres vides + `prompt` : le texte gris s'affiche dans le champ,
+            // pas comme une étiquette à côté (comportement par défaut dans un Form).
+            TextField("", text: $glass.name, prompt: Text("Nom (facultatif)"))
+                .labelsHidden()
                 .textFieldStyle(.roundedBorder)
 
-            TextField("cl", value: centiliters, format: .number)
+            TextField("", value: centiliters, format: .number, prompt: Text("25"))
+                .labelsHidden()
                 .textFieldStyle(.roundedBorder)
                 .multilineTextAlignment(.trailing)
-                .frame(width: 52)
+                .frame(width: 56)
             Text("cl")
                 .foregroundStyle(.secondary)
 

@@ -1,7 +1,8 @@
 import AppKit
 import SwiftUI
 
-/// Ouvre la fenêtre des réglages.
+/// Ouvre la fenêtre des réglages, avec des onglets à icônes dans la barre d'outils
+/// (même présentation que les Réglages Système et les apps d'Apple).
 /// On gère la fenêtre nous-mêmes plutôt que la scène `Settings` de SwiftUI : pour une app
 /// sans icône dans le Dock, c'est la seule façon fiable de l'ouvrir au premier plan
 /// sur toutes les versions de macOS à partir de la 13.
@@ -13,15 +14,31 @@ final class SettingsWindowController {
 
     func show(settings: AppSettings) {
         if window == nil {
-            let hosting = NSHostingController(rootView: SettingsView(settings: settings))
-            let window = NSWindow(contentViewController: hosting)
-            window.title = String(localized: "Réglages de Plouf")
+            let tabs = NSTabViewController()
+            tabs.tabStyle = .toolbar
+            tabs.addTabViewItem(tab(String(localized: "Général"), symbol: "gearshape", height: 330,
+                                    view: GeneralSettingsView(settings: settings)))
+            tabs.addTabViewItem(tab(String(localized: "Verres"), symbol: "cup.and.saucer", height: 440,
+                                    view: GlassesSettingsView(settings: settings)))
+
+            let window = NSWindow(contentViewController: tabs)
             window.styleMask = [.titled, .closable, .miniaturizable]
+            window.toolbarStyle = .preference
             window.isReleasedWhenClosed = false
             window.center()
             self.window = window
         }
         NSApp.activate(ignoringOtherApps: true)
         window?.makeKeyAndOrderFront(nil)
+    }
+
+    /// Chaque onglet a une taille fixe : la fenêtre s'y adapte en changeant d'onglet.
+    private func tab<Content: View>(_ label: String, symbol: String, height: CGFloat,
+                                    view: Content) -> NSTabViewItem {
+        let hosting = NSHostingController(rootView: view.frame(width: 460, height: height))
+        let item = NSTabViewItem(viewController: hosting)
+        item.label = label
+        item.image = NSImage(systemSymbolName: symbol, accessibilityDescription: label)
+        return item
     }
 }
