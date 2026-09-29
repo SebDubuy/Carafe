@@ -14,17 +14,16 @@ struct HistoryBarsView: View {
                 VStack(spacing: 4) {
                     Image(systemName: "drop.fill")
                         .font(.system(size: 8))
-                        .foregroundStyle(Theme.waterLight)
+                        .foregroundStyle(Theme.water)
                         .opacity(day.goalReached ? 1 : 0)
                     ZStack(alignment: .bottom) {
                         Capsule()
-                            .fill(Color.primary.opacity(0.10))
+                            .fill(Theme.track)
                         Capsule()
-                            .fill(day.goalReached ? AnyShapeStyle(Theme.waterGradient)
-                                                  : AnyShapeStyle(Theme.water.opacity(0.45)))
+                            .fill(day.goalReached ? Theme.water : Theme.waterLight)
                             .frame(height: max(Self.barHeight * day.progress, day.total > 0 ? 4 : 0))
                     }
-                    .frame(width: 16, height: Self.barHeight)
+                    .frame(width: 12, height: Self.barHeight)
                     Text(Self.weekdayLetter(day.day))
                         .font(.caption2.weight(isToday ? .bold : .regular))
                         .foregroundStyle(isToday ? .primary : .secondary)

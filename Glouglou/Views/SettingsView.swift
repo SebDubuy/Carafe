@@ -41,8 +41,7 @@ struct SettingsView: View {
             }
         }
         .frame(width: 460, height: 540)
-        .background(GlassBackground(cornerRadius: 16).ignoresSafeArea())
-        .tint(Theme.controlTint)
+        .background(Color(nsColor: .windowBackgroundColor).ignoresSafeArea())
     }
 
     private var tabBar: some View {
@@ -127,11 +126,11 @@ struct GlassCard<Content: View>: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(Color.primary.opacity(0.06))
+                    .fill(Color.primary.opacity(0.04))
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .strokeBorder(Color.primary.opacity(0.08), lineWidth: 1)
+                    .strokeBorder(Color.primary.opacity(0.07), lineWidth: 1)
             )
         }
     }

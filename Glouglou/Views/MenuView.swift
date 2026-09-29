@@ -30,7 +30,7 @@ struct MenuView: View {
             SplashView(trigger: splashCount)
                 .padding(.top, 60)
         }
-        .background(GlassBackground().ignoresSafeArea())
+
     }
 
     // MARK: - Progression du jour
@@ -43,19 +43,17 @@ struct MenuView: View {
                                                       darkMenuBar: colorScheme == .dark,
                                                       alert: scheduler.isInactive))
                 Text("Aujourd'hui")
-                    .font(.headline)
+                    .font(.title3.weight(.bold))
                 Spacer()
                 Text(Formatters.percent(Double(store.todayTotal) / Double(max(store.goalMilliliters, 1))))
-                    .font(.system(.callout, design: .rounded).weight(.semibold))
                     .foregroundStyle(.secondary)
                     .monospacedDigit()
             }
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 Text("\(Formatters.litersValue(store.todayTotal)) L")
-                    .font(.system(size: 30, weight: .bold, design: .rounded))
+                    .font(.title2.weight(.semibold))
                     .foregroundStyle(.primary)
                 Text("sur \(Formatters.liters(store.goalMilliliters))")
-                    .font(.system(.title3, design: .rounded))
                     .foregroundStyle(.secondary)
             }
             .monospacedDigit()
@@ -103,7 +101,7 @@ struct MenuView: View {
                 } label: {
                     VStack(spacing: 2) {
                         Text("+ \(Formatters.glass(glass.milliliters, unit: unit))")
-                            .font(.system(.title3, design: .rounded).weight(.semibold))
+                            .font(.body.weight(.medium))
                         if !glass.name.isEmpty {
                             Text(glass.name)
                                 .font(.caption)

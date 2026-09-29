@@ -15,16 +15,13 @@ final class SettingsWindowController {
         if window == nil {
             let root = SettingsView(settings: scheduler.settingsForUI, scheduler: scheduler)
             let window = NSWindow(contentViewController: NSHostingController(rootView: root))
-            // Barre de titre transparente et contenu dessous : le fond bleuté couvre toute la
+            // Barre de titre transparente et contenu dessous : un seul fond uni pour toute la
             // fenêtre ; seuls les boutons rouge / orange / vert restent visibles.
             window.styleMask = [.titled, .closable, .miniaturizable, .fullSizeContentView]
             window.titlebarAppearsTransparent = true
             window.titleVisibility = .hidden
             window.title = String(localized: "Réglages de Glouglou")
             window.isMovableByWindowBackground = true
-            // Fenêtre transparente : c'est le verre liquide du fond qui fait tout le rendu.
-            window.isOpaque = false
-            window.backgroundColor = .clear
             window.isReleasedWhenClosed = false
             window.center()
             self.window = window

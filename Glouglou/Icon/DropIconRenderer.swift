@@ -1,6 +1,6 @@
 import AppKit
 
-/// Dessine l'icône de Glouglou : une goutte d'eau qui se remplit d'un bleu doux selon
+/// Dessine l'icône de Glouglou : une goutte d'eau qui se remplit de bleu selon
 /// la progression. Contour blanc sur barre sombre, graphite sur barre claire, orange en
 /// alerte : l'image n'est donc pas en mode « template » et ses couleurs sont choisies
 /// à la main selon l'apparence de la barre.
@@ -59,18 +59,17 @@ enum DropIconRenderer {
     /// Orange de l'état « alerte ».
     private static let alertOrange = NSColor(srgbRed: 1.0, green: 0.62, blue: 0.10, alpha: 1)
 
-    /// Bleu brume de l'eau (le même que `Theme.water`).
-    static let mistWater = NSColor(srgbRed: 0.42, green: 0.64, blue: 0.88, alpha: 1)
-    private static let mistSurface = NSColor(srgbRed: 0.62, green: 0.80, blue: 0.95, alpha: 1)
+    /// Bleu de l'eau (le bleu du système, comme `Theme.water`).
+    private static var water: NSColor { .systemBlue }
 
-    /// Dessine la goutte de la barre de menus : eau bleu brume, contour blanc sur barre
+    /// Dessine la goutte de la barre de menus : eau bleue, contour blanc sur barre
     /// sombre, graphite sur barre claire, orange en alerte.
     static func draw(level: Int, darkMenuBar: Bool, alert: Bool = false, in rect: NSRect) {
         let ink = darkMenuBar ? NSColor.white : NSColor(white: 0.12, alpha: 1)
         draw(level: level,
              lineColor: alert ? alertOrange : ink,
-             waterColor: mistWater,
-             surfaceColor: mistSurface,
+             waterColor: water,
+             surfaceColor: water.blended(withFraction: 0.35, of: .white) ?? water,
              shineColor: NSColor.white.withAlphaComponent(0.75),
              in: rect)
     }
