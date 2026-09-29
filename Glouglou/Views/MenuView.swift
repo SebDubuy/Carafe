@@ -136,8 +136,7 @@ struct MenuView: View {
             Text(unit.symbol)
                 .foregroundStyle(.secondary)
             Button("Ajouter", action: addCustomAmount)
-                .buttonStyle(.borderedProminent)
-                .tint(Theme.water)
+                .buttonStyle(.bordered)
                 .disabled(!isCustomAmountValid)
         }
         .font(.callout)
@@ -238,7 +237,6 @@ struct MenuView: View {
         } label: {
             HStack(spacing: 6) {
                 Image(systemName: "arrow.uturn.backward")
-                    .foregroundStyle(Theme.water)
                 Text("Annuler")
                 if let last = store.todayEntries.last {
                     Text("(\(Formatters.glass(last.milliliters, unit: unit)))")

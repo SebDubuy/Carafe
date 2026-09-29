@@ -19,7 +19,7 @@ struct RemindersSettingsView: View {
             GlassCard {
                 HStack {
                     Image(systemName: "bell.badge")
-                        .foregroundStyle(Theme.waterLight)
+                        .foregroundStyle(.secondary)
                     Text(nextReminderText)
                     Spacer()
                 }

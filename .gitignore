@@ -7,3 +7,6 @@ xcuserdata/
 DerivedData/
 build/
 *.xcuserstate
+
+# Landing page (locale uniquement, jamais poussée)
+landing/

@@ -12,11 +12,11 @@ func drawIcon(side: CGFloat) {
     let shape = NSBezierPath(roundedRect: rect, xRadius: side * 0.2237, yRadius: side * 0.2237)
     shape.addClip()
 
-    // Fond : dégradé d'eau, clair en haut, profond en bas.
+    // Fond : verre graphite, clair en haut, profond en bas (palette « gris liquid glass »).
     let gradient = NSGradient(colors: [
-        NSColor(srgbRed: 0.45, green: 0.85, blue: 1.00, alpha: 1),
-        NSColor(srgbRed: 0.18, green: 0.56, blue: 1.00, alpha: 1),
-        NSColor(srgbRed: 0.08, green: 0.33, blue: 0.85, alpha: 1),
+        NSColor(srgbRed: 0.64, green: 0.67, blue: 0.71, alpha: 1),
+        NSColor(srgbRed: 0.36, green: 0.39, blue: 0.43, alpha: 1),
+        NSColor(srgbRed: 0.16, green: 0.18, blue: 0.21, alpha: 1),
     ])!
     gradient.draw(in: rect, angle: -90)
 
@@ -30,8 +30,9 @@ func drawIcon(side: CGFloat) {
                           width: dropSide, height: dropSide)
     DropIconRenderer.draw(level: 6,
                           lineColor: .white,
-                          waterColor: NSColor.white.withAlphaComponent(0.92),
-                          surfaceColor: NSColor(srgbRed: 0.80, green: 0.95, blue: 1.0, alpha: 1),
+                          waterColor: NSColor.white.withAlphaComponent(0.88),
+                          surfaceColor: NSColor.white.withAlphaComponent(0.55),
+                          shineColor: NSColor(white: 0.25, alpha: 0.45),
                           in: dropRect)
 }
 

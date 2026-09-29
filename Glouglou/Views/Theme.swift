@@ -1,23 +1,28 @@
 import SwiftUI
 
-/// Couleurs et styles « eau » partagés par les vues de Glouglou.
+/// Couleurs partagées par les vues de Glouglou : un « gris liquid glass » sobre.
+/// L'eau est blanche et givrée en thème sombre, graphite en thème clair (couleur
+/// primaire du système) ; aucune couleur vive, sauf l'orange de l'alerte.
 enum Theme {
-    /// Bleu de l'eau (le même que dans l'icône de la barre de menus).
-    static let water = Color(red: 0.18, green: 0.56, blue: 1.0)
-    /// Bleu clair, presque turquoise, pour les dégradés.
-    static let waterLight = Color(red: 0.36, green: 0.80, blue: 1.0)
+    /// Eau : couleur primaire du système (blanc en sombre, presque noir en clair).
+    static let water = Color.primary.opacity(0.88)
+    /// Eau plus légère, pour les dégradés et les détails.
+    static let waterLight = Color.primary.opacity(0.55)
 
     static let waterGradient = LinearGradient(colors: [waterLight, water],
                                               startPoint: .leading, endPoint: .trailing)
 
-    /// Touche de bleu posée sur le verre du fond.
-    static let glassTint = NSColor(srgbRed: 0.18, green: 0.56, blue: 1.0, alpha: 0.16)
+    /// Couleur des interrupteurs, sélecteurs, etc. : graphite, lisible dans les deux thèmes.
+    static let controlTint = Color(white: 0.55)
+
+    /// Teinte posée sur le verre du fond : aucune (verre neutre).
+    static let glassTint: NSColor? = nil
 }
 
-/// Fond « verre liquide » bleuté, commun au menu et à la fenêtre des réglages.
+/// Fond « verre liquide » neutre, commun au menu et à la fenêtre des réglages.
 /// - macOS 26 et plus : vrai matériau Liquid Glass (`NSGlassEffectView`, style normal :
 ///   assez dépoli pour que le texte des fenêtres derrière ne se lise pas).
-/// - Avant : flou translucide classique (`NSVisualEffectView`) avec la même touche de bleu.
+/// - Avant : flou translucide classique (`NSVisualEffectView`).
 /// La fenêtre qui l'accueille doit être transparente pour qu'on voie à travers.
 struct GlassBackground: NSViewRepresentable {
     /// Arrondi des coins, à caler sur celui de la fenêtre quand elle est transparente.
@@ -38,11 +43,13 @@ struct GlassBackground: NSViewRepresentable {
         blur.wantsLayer = true
         blur.layer?.cornerRadius = cornerRadius
         blur.layer?.masksToBounds = true
-        let tint = NSView()
-        tint.wantsLayer = true
-        tint.layer?.backgroundColor = Theme.glassTint.cgColor
-        tint.autoresizingMask = [.width, .height]
-        blur.addSubview(tint)
+        if let color = Theme.glassTint {
+            let tint = NSView()
+            tint.wantsLayer = true
+            tint.layer?.backgroundColor = color.cgColor
+            tint.autoresizingMask = [.width, .height]
+            blur.addSubview(tint)
+        }
         return blur
     }
 
@@ -64,7 +71,7 @@ struct WaterProgressBar: View {
                 Capsule()
                     .fill(Theme.waterGradient)
                     .frame(width: max(proxy.size.width * min(max(progress, 0), 1), progress > 0 ? 10 : 0))
-                    .shadow(color: Theme.water.opacity(0.5), radius: 4)
+                    .shadow(color: Color.primary.opacity(0.25), radius: 3)
             }
         }
         .frame(height: 10)
@@ -90,7 +97,7 @@ struct WaterButtonStyle: ButtonStyle {
         } else {
             label
                 .background(shape.fill(Color.primary.opacity(configuration.isPressed ? 0.12 : 0.06)))
-                .overlay(shape.strokeBorder(Theme.water.opacity(0.35), lineWidth: 1))
+                .overlay(shape.strokeBorder(Color.primary.opacity(0.15), lineWidth: 1))
         }
     }
 }

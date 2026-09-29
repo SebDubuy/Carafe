@@ -1,8 +1,9 @@
 import AppKit
 
-/// Dessine l'icône de Glouglou : une goutte d'eau qui se remplit de bleu selon la progression.
-/// L'image de la barre de menus n'est pas en mode « template » (sinon elle serait monochrome) :
-/// le contour est donc coloré à la main selon l'apparence de la barre (claire ou sombre).
+/// Dessine l'icône de Glouglou : une goutte d'eau qui se remplit selon la progression.
+/// Monochrome (blanc givré sur barre sombre, graphite sur barre claire), sauf en alerte
+/// où le contour passe à l'orange : l'image n'est donc pas en mode « template » et
+/// ses couleurs sont choisies à la main selon l'apparence de la barre.
 enum DropIconRenderer {
     /// Nombre de paliers de remplissage (0 = vide, `levels` = plein).
     static let levels = 10
@@ -54,23 +55,26 @@ enum DropIconRenderer {
 
     // MARK: - Dessin
 
-    /// Eau bleue de l'icône en couleur.
-    private static let blueWater = NSColor(srgbRed: 0.18, green: 0.56, blue: 1.0, alpha: 1)
 
     /// Orange de l'état « alerte ».
     private static let alertOrange = NSColor(srgbRed: 1.0, green: 0.62, blue: 0.10, alpha: 1)
 
-    /// Dessine la goutte en couleur (eau bleue, contour selon la barre de menus, orange en alerte).
+    /// Dessine la goutte de la barre de menus : eau givrée de la couleur du contour
+    /// (blanc sur barre sombre, graphite sur barre claire), contour orange en alerte.
     static func draw(level: Int, darkMenuBar: Bool, alert: Bool = false, in rect: NSRect) {
+        let ink = darkMenuBar ? NSColor.white : NSColor(white: 0.12, alpha: 1)
         draw(level: level,
-             lineColor: alert ? alertOrange : (darkMenuBar ? .white : NSColor(white: 0.12, alpha: 1)),
-             waterColor: blueWater,
-             surfaceColor: blueWater.blended(withFraction: 0.35, of: .white) ?? blueWater,
+             lineColor: alert ? alertOrange : ink,
+             waterColor: ink.withAlphaComponent(0.78),
+             // Surface plus claire que l'eau : effet givré.
+             surfaceColor: darkMenuBar ? NSColor.black.withAlphaComponent(0.22) : NSColor.white.withAlphaComponent(0.45),
+             shineColor: darkMenuBar ? NSColor.black.withAlphaComponent(0.35) : NSColor.white.withAlphaComponent(0.8),
              in: rect)
     }
 
     /// Dessine la goutte dans `rect` (coordonnées pensées pour 18 × 18 puis mises à l'échelle).
     static func draw(level: Int, lineColor: NSColor, waterColor: NSColor, surfaceColor: NSColor,
+                     shineColor: NSColor = NSColor.white.withAlphaComponent(0.85),
                      in rect: NSRect) {
         guard let context = NSGraphicsContext.current?.cgContext else { return }
         context.saveGState()
@@ -106,7 +110,7 @@ enum DropIconRenderer {
                         startAngle: 200, endAngle: 245)
         shine.lineWidth = 1.1
         shine.lineCapStyle = .round
-        (level >= 3 ? NSColor.white.withAlphaComponent(0.85) : lineColor.withAlphaComponent(0.55)).setStroke()
+        (level >= 3 ? shineColor : lineColor.withAlphaComponent(0.55)).setStroke()
         shine.stroke()
 
         context.restoreGState()

@@ -42,7 +42,7 @@ struct SettingsView: View {
         }
         .frame(width: 460, height: 540)
         .background(GlassBackground(cornerRadius: 16).ignoresSafeArea())
-        .tint(Theme.water)
+        .tint(Theme.controlTint)
     }
 
     private var tabBar: some View {
@@ -86,12 +86,12 @@ private struct TabButton<Icon: View>: View {
                 Text(title)
                     .font(.caption)
             }
-            .foregroundStyle(isSelected ? Theme.waterLight : Color.secondary)
+            .foregroundStyle(isSelected ? Color.primary : Color.secondary)
             .frame(width: 72, height: 50)
             .background {
                 if isSelected {
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(Theme.water.opacity(0.22))
+                        .fill(Color.primary.opacity(0.10))
                 }
             }
             .contentShape(Rectangle())
