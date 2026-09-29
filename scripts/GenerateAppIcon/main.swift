@@ -12,27 +12,23 @@ func drawIcon(side: CGFloat) {
     let shape = NSBezierPath(roundedRect: rect, xRadius: side * 0.2237, yRadius: side * 0.2237)
     shape.addClip()
 
-    // Fond : verre bleu brume, doux et désaturé, clair en haut, plus profond en bas.
+    // Fond : dégradé bleu, du bleu ciel en haut au bleu profond en bas (comme le logo du site).
     let gradient = NSGradient(colors: [
-        NSColor(srgbRed: 0.80, green: 0.88, blue: 0.95, alpha: 1),
-        NSColor(srgbRed: 0.56, green: 0.71, blue: 0.88, alpha: 1),
-        NSColor(srgbRed: 0.36, green: 0.51, blue: 0.72, alpha: 1),
+        NSColor(srgbRed: 0.435, green: 0.714, blue: 1.000, alpha: 1),   // #6FB6FF
+        NSColor(srgbRed: 0.039, green: 0.435, blue: 0.878, alpha: 1),   // #0A6FE0
     ])!
     gradient.draw(in: rect, angle: -90)
 
-    // Léger reflet en haut, effet verre (dégradé qui s'efface vers le milieu).
-    let shine = NSGradient(colors: [NSColor.white.withAlphaComponent(0.22), NSColor.white.withAlphaComponent(0)])!
-    shine.draw(in: NSRect(x: 0, y: side * 0.5, width: side, height: side * 0.5), angle: -90)
-
-    // La goutte de Carafe, blanche, à moitié remplie.
-    let dropSide = side * 0.68
-    let dropRect = NSRect(x: (side - dropSide) / 2, y: (side - dropSide) / 2 - side * 0.01,
+    // La goutte de Carafe, blanche, à moitié remplie, sans reflet : simple et net.
+    let dropSide = side * 0.60
+    let dropRect = NSRect(x: (side - dropSide) / 2, y: (side - dropSide) / 2,
                           width: dropSide, height: dropSide)
-    DropIconRenderer.draw(level: 6,
+    let water = NSColor.white.withAlphaComponent(0.9)
+    DropIconRenderer.draw(level: 5,
                           lineColor: .white,
-                          waterColor: NSColor.white.withAlphaComponent(0.88),
-                          surfaceColor: NSColor.white.withAlphaComponent(0.55),
-                          shineColor: NSColor(srgbRed: 0.36, green: 0.51, blue: 0.72, alpha: 0.5),
+                          waterColor: water,
+                          surfaceColor: water,
+                          shineColor: .clear,
                           in: dropRect)
 }
 
