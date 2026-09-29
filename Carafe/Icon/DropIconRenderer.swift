@@ -30,13 +30,24 @@ enum DropIconRenderer {
         let key = "\(level)-\(darkMenuBar)-\(alert)"
         if let cached = cache[key] { return cached }
         let image = NSImage(size: size, flipped: false) { rect in
-            draw(level: level, darkMenuBar: darkMenuBar, alert: alert, in: rect)
+            draw(level: level, darkMenuBar: darkMenuBar, alert: alert, in: menuBarRect(in: rect))
             return true
         }
         image.isTemplate = false
         image.accessibilityDescription = String(localized: "Carafe")
         cache[key] = image
         return image
+    }
+
+    /// Zone de dessin dans la barre de menus : la goutte est un peu réduite (les icônes
+    /// système font environ 15 pt de haut sur 18) et légèrement descendue, pour que sa
+    /// partie ronde, qui porte le poids visuel, s'aligne sur les icônes voisines.
+    private static func menuBarRect(in rect: NSRect) -> NSRect {
+        let scale: CGFloat = 0.86
+        let side = rect.width * scale
+        return NSRect(x: rect.midX - side / 2,
+                      y: rect.midY - side / 2 - 0.5,   // y vers le haut : −0,5 pt = plus bas
+                      width: side, height: side)
     }
 
     /// Goutte à moitié pleine en mode « template » (monochrome, adaptée au thème par macOS),
