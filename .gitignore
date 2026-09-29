@@ -10,3 +10,7 @@ build/
 
 # Landing page (locale uniquement, jamais poussée)
 landing/
+
+# Builds de distribution
+build-release/
+dist/
