@@ -19,6 +19,17 @@ struct SplashView: View {
 
     var body: some View {
         ZStack {
+            // Rien n'est affiché au repos : l'onde et les gouttes n'existent que pendant l'animation.
+            if !droplets.isEmpty {
+                splash
+            }
+        }
+        .allowsHitTesting(false)
+        .onChange(of: trigger) { _ in play() }
+    }
+
+    private var splash: some View {
+        ZStack {
             // Onde qui s'élargit.
             Circle()
                 .strokeBorder(Theme.waterLight.opacity(burst ? 0 : 0.8), lineWidth: 3)
@@ -37,8 +48,6 @@ struct SplashView: View {
             }
         }
         .animation(.easeOut(duration: 0.9), value: burst)
-        .allowsHitTesting(false)
-        .onChange(of: trigger) { _ in play() }
     }
 
     private func play() {

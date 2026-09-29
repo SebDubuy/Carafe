@@ -126,19 +126,6 @@ final class HistoryTests: XCTestCase {
         XCTAssertFalse(engine.isInactive(evening))
     }
 
-    func testStatistiques() {
-        let store = makeStore()
-        XCTAssertNil(store.weeklyAverage)
-        currentDate = at(day: 25, hour: 10); store.add(milliliters: 1500)
-        currentDate = at(day: 26, hour: 10); store.add(milliliters: 2500)
-        currentDate = at(day: 27, hour: 15); store.add(milliliters: 500)
-        currentDate = at(day: 28, hour: 10); store.add(milliliters: 3000)
-        // Moyenne des jours précédents notés (aujourd'hui exclu) : (1,5 + 2,5 + 0,5) / 3 = 1,5 L
-        XCTAssertEqual(store.weeklyAverage, 1500)
-        XCTAssertEqual(store.bestDay?.total, 3000)
-        XCTAssertEqual(store.peakHour, 10)
-    }
-
     func testTempsEcoule() {
         let now = at(day: 28, hour: 12)
         XCTAssertEqual(Formatters.elapsed(since: now, now: now), "à l'instant")

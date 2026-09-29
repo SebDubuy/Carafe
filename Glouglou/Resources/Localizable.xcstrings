@@ -1,366 +1,143 @@
 {
-  "sourceLanguage" : "fr",
-  "strings" : {
-    "" : {
-
-    },
-    "%@ : %@ sur %@" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ : %2$@ sur %3$@"
+  "sourceLanguage": "fr",
+  "strings": {
+    "": {},
+    "%@ : %@ sur %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ : %2$@ sur %3$@"
           }
         }
       }
     },
-    "%@ L" : {
-
-    },
-    "%@ bu, %@ attendus à cette heure." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ bu, %2$@ attendus à cette heure."
+    "%@ L": {},
+    "%@ bu, %@ attendus à cette heure.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ bu, %2$@ attendus à cette heure."
           }
         }
       }
     },
-    "%lld h" : {
-
-    },
-    "%lld kg" : {
-
-    },
-    "(%@)" : {
-
-    },
-    "+ %@" : {
-
-    },
-    "+ 1 verre" : {
-
-    },
-    "25" : {
-
-    },
-    "25 cl = 250 ml. Le total du jour reste affiché en litres." : {
-
-    },
-    "250" : {
-
-    },
-    "40" : {
-
-    },
-    "400" : {
-
-    },
-    "7 derniers jours" : {
-
-    },
-    "Afficher" : {
-
-    },
-    "Ajouter" : {
-
-    },
-    "Ajouter un verre" : {
-
-    },
-    "Annuler" : {
-
-    },
-    "Annuler le dernier ajout" : {
-
-    },
-    "Après" : {
-
-    },
-    "Aucun rappel en dehors de cette plage, ni quand l'écran est verrouillé." : {
-
-    },
-    "Aucun rappel prévu pour l'instant" : {
-
-    },
-    "Aujourd'hui" : {
-
-    },
-    "Autorise-les dans Réglages Système › Notifications › Glouglou pour recevoir les rappels." : {
-
-    },
-    "Autre quantité" : {
-
-    },
-    "Barre de menus" : {
-
-    },
-    "Calcul" : {
-
-    },
-    "Calcul du prochain rappel…" : {
-
-    },
-    "Centilitres (cl)" : {
-
-    },
-    "Changement de jour" : {
-
-    },
-    "Coucou, c'est l'eau" : {
-
-    },
-    "De" : {
-
-    },
-    "De %@ à %@. L'étoile marque le verre par défaut, proposé dans les notifications." : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "De %1$@ à %2$@. L'étoile marque le verre par défaut, proposé dans les notifications."
+    "%lld h": {},
+    "%lld kg": {},
+    "(%@)": {},
+    "+ %@": {},
+    "+ 1 verre": {},
+    "25": {},
+    "25 cl = 250 ml. Le total du jour reste affiché en litres.": {},
+    "250": {},
+    "40": {},
+    "400": {},
+    "7 derniers jours": {},
+    "Afficher": {},
+    "Ajouter": {},
+    "Ajouter un verre": {},
+    "Annuler": {},
+    "Annuler le dernier ajout": {},
+    "Après": {},
+    "Aucun rappel en dehors de cette plage, ni quand l'écran est verrouillé.": {},
+    "Aucun rappel prévu pour l'instant": {},
+    "Aujourd'hui": {},
+    "Autorise-les dans Réglages Système › Notifications › Glouglou pour recevoir les rappels.": {},
+    "Autre quantité": {},
+    "Barre de menus": {},
+    "Calcul": {},
+    "Calcul du prochain rappel…": {},
+    "Centilitres (cl)": {},
+    "Changement de jour": {},
+    "Coucou, c'est l'eau": {},
+    "De": {},
+    "De %@ à %@. L'étoile marque le verre par défaut, proposé dans les notifications.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "De %1$@ à %2$@. L'étoile marque le verre par défaut, proposé dans les notifications."
           }
         }
       }
     },
-    "Debug" : {
-
-    },
-    "Dernier verre %@" : {
-
-    },
-    "Deux minutes, un verre, et c'est reparti." : {
-
-    },
-    "Divers" : {
-
-    },
-    "Envoyer un rappel test" : {
-
-    },
-    "Fixe" : {
-
-    },
-    "Glouglou" : {
-
-    },
-    "Glouglou ?" : {
-
-    },
-    "Général" : {
-
-    },
-    "Hop, un verre ?" : {
-
-    },
-    "Icône + litres" : {
-
-    },
-    "Icône + pourcentage" : {
-
-    },
-    "Icône seule" : {
-
-    },
-    "Il n'attend que toi." : {
-
-    },
-    "Juste de quoi faire glouglou." : {
-
-    },
-    "L'objectif est réparti sur la plage horaire. Un rappel au plus par heure si le retard dépasse 20 %." : {
-
-    },
-    "Lancer Glouglou au démarrage" : {
-
-    },
-    "Les notifications de Glouglou sont désactivées." : {
-
-    },
-    "Les verres ajoutés pendant la simulation sont effacés au retour à aujourd'hui." : {
-
-    },
-    "Me prévenir si je suis en retard" : {
-
-    },
-    "Me rappeler de boire" : {
-
-    },
-    "Millilitres (ml)" : {
-
-    },
-    "Mode debug : tous les délais sont ramenés à 1 minute." : {
-
-    },
-    "Moyenne 7 j" : {
-
-    },
-    "Nom (facultatif)" : {
-
-    },
-    "Notifications bloquées : les autoriser…" : {
-
-    },
-    "Notifications refusées par macOS : le rappel test ne s'affichera pas." : {
-
-    },
-    "Objectif" : {
-
-    },
-    "Objectif atteint : plus de rappel aujourd'hui 🎉" : {
-
-    },
-    "Objectif atteint, bravo ! 🎉" : {
-
-    },
-    "Objectif calculé" : {
-
-    },
-    "Objectif quotidien" : {
-
-    },
-    "On ne s'est pas vus depuis un moment." : {
-
-    },
-    "On rattrape en douceur ?" : {
-
-    },
-    "Outils" : {
-
-    },
-    "Ouvrir les réglages des notifications" : {
-
-    },
-    "Pas encore de verre aujourd'hui" : {
-
-    },
-    "Passer au jour suivant" : {
-
-    },
-    "Pause eau ?" : {
-
-    },
-    "Petit coup de pouce ?" : {
-
-    },
-    "Pic" : {
-
-    },
-    "Plage horaire" : {
-
-    },
-    "Plus aucun rappel une fois l'objectif du jour atteint." : {
-
-    },
-    "Poids" : {
-
-    },
-    "Poids × 33 ml, arrondi à 0,1 L." : {
-
-    },
-    "Prochain rappel demain vers %@" : {
-
-    },
-    "Prochain rappel vers %@" : {
-
-    },
-    "Quitter" : {
-
-    },
-    "Quitter le mode debug" : {
-
-    },
-    "Rappel d'inactivité" : {
-
-    },
-    "Rappel de rythme" : {
-
-    },
-    "Rappeler dans 15 min" : {
-
-    },
-    "Rappels" : {
-
-    },
-    "Record" : {
-
-    },
-    "Revenir à aujourd'hui" : {
-
-    },
-    "Réglages Système › Notifications › Glouglou" : {
-
-    },
-    "Réglages de Glouglou" : {
-
-    },
-    "Réglages…" : {
-
-    },
-    "Réévaluer maintenant" : {
-
-    },
-    "Selon mon poids" : {
-
-    },
-    "Si aucun verre n'a été ajouté depuis ce délai. Le compte à rebours repart à chaque verre." : {
-
-    },
-    "Son à chaque verre" : {
-
-    },
-    "Supprimer ce verre" : {
-
-    },
-    "Tailles de verre" : {
-
-    },
-    "Ton corps te dira merci (en silence)." : {
-
-    },
-    "Ton verre s'ennuie" : {
-
-    },
-    "Tous les délais à 1 minute" : {
-
-    },
-    "Tu es un peu en retard" : {
-
-    },
-    "Une petite gorgée ?" : {
-
-    },
-    "Unité" : {
-
-    },
-    "Verre par défaut" : {
-
-    },
-    "Verres" : {
-
-    },
-    "Verres du jour (%lld)" : {
-
-    },
-    "il y a %@" : {
-
-    },
-    "sur %@" : {
-
-    },
-    "Ça fait un moment… Une petite gorgée ?" : {
-
-    },
-    "à" : {
-
-    },
-    "à l'instant" : {
-
-    },
-    "🔥 %lld jours d'affilée" : {
-
-    }
+    "Debug": {},
+    "Dernier verre %@": {},
+    "Deux minutes, un verre, et c'est reparti.": {},
+    "Divers": {},
+    "Envoyer un rappel test": {},
+    "Fixe": {},
+    "Glouglou": {},
+    "Glouglou ?": {},
+    "Général": {},
+    "Hop, un verre ?": {},
+    "Icône + litres": {},
+    "Icône + pourcentage": {},
+    "Icône seule": {},
+    "Il n'attend que toi.": {},
+    "Juste de quoi faire glouglou.": {},
+    "L'objectif est réparti sur la plage horaire. Un rappel au plus par heure si le retard dépasse 20 %.": {},
+    "Lancer Glouglou au démarrage": {},
+    "Les notifications de Glouglou sont désactivées.": {},
+    "Les verres ajoutés pendant la simulation sont effacés au retour à aujourd'hui.": {},
+    "Me prévenir si je suis en retard": {},
+    "Me rappeler de boire": {},
+    "Millilitres (ml)": {},
+    "Mode debug : tous les délais sont ramenés à 1 minute.": {},
+    "Nom (facultatif)": {},
+    "Notifications bloquées : les autoriser…": {},
+    "Notifications refusées par macOS : le rappel test ne s'affichera pas.": {},
+    "Objectif": {},
+    "Objectif atteint : plus de rappel aujourd'hui 🎉": {},
+    "Objectif atteint, bravo ! 🎉": {},
+    "Objectif calculé": {},
+    "Objectif quotidien": {},
+    "On ne s'est pas vus depuis un moment.": {},
+    "On rattrape en douceur ?": {},
+    "Outils": {},
+    "Ouvrir les réglages des notifications": {},
+    "Pas encore de verre aujourd'hui": {},
+    "Passer au jour suivant": {},
+    "Pause eau ?": {},
+    "Petit coup de pouce ?": {},
+    "Plage horaire": {},
+    "Plus aucun rappel une fois l'objectif du jour atteint.": {},
+    "Poids": {},
+    "Poids × 33 ml, arrondi à 0,1 L.": {},
+    "Prochain rappel demain vers %@": {},
+    "Prochain rappel vers %@": {},
+    "Quitter": {},
+    "Quitter le mode debug": {},
+    "Rappel d'inactivité": {},
+    "Rappel de rythme": {},
+    "Rappeler dans 15 min": {},
+    "Rappels": {},
+    "Revenir à aujourd'hui": {},
+    "Réglages Système › Notifications › Glouglou": {},
+    "Réglages de Glouglou": {},
+    "Réglages…": {},
+    "Réévaluer maintenant": {},
+    "Selon mon poids": {},
+    "Si aucun verre n'a été ajouté depuis ce délai. Le compte à rebours repart à chaque verre.": {},
+    "Son à chaque verre": {},
+    "Supprimer ce verre": {},
+    "Tailles de verre": {},
+    "Ton corps te dira merci (en silence).": {},
+    "Ton verre s'ennuie": {},
+    "Tous les délais à 1 minute": {},
+    "Tu es un peu en retard": {},
+    "Une petite gorgée ?": {},
+    "Unité": {},
+    "Verre par défaut": {},
+    "Verres": {},
+    "Verres du jour (%lld)": {},
+    "il y a %@": {},
+    "sur %@": {},
+    "Ça fait un moment… Une petite gorgée ?": {},
+    "à": {},
+    "à l'instant": {},
+    "🔥 %lld jours d'affilée": {}
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

@@ -227,7 +227,6 @@ struct MenuView: View {
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.secondary)
             HistoryBarsView(days: store.history(days: 7))
-            StatsView(store: store)
         }
     }
 

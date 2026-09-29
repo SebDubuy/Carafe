@@ -46,7 +46,6 @@ Code propre et découpé en responsabilités claires :
 - **Quantité libre** : petit champ pour ajouter une quantité ponctuelle (ex. 40 cl) sans créer de verre.
 - **Liste des verres du jour** : voir les verres bus aujourd'hui et pouvoir supprimer un verre précis.
 - **Série de jours** : « 🔥 5 jours d'affilée » quand l'objectif est atteint plusieurs jours de suite.
-- **Statistiques** : moyenne de la semaine, meilleure journée, heure où l'on boit le plus.
 - Accès aux réglages + bouton Quitter.
 
 ### Réglages
@@ -91,7 +90,7 @@ Prévoir un mode debug caché (par exemple Option + clic sur « Réglages », ou
 - permet de simuler un changement de jour,
 - affiche l'état interne des rappels (prochain rappel prévu, raison).
 
-Hors périmètre (écarté) : types de boisson (on reste sur l'eau), raccourci clavier global, export CSV.
+Hors périmètre (écarté) : types de boisson (on reste sur l'eau), raccourci clavier global, export CSV, statistiques (moyenne, record, heure de pointe : jugées superflues).
 
 ## Conventions
 
@@ -108,6 +107,6 @@ Hors périmètre (écarté) : types de boisson (on reste sur l'eau), raccourci c
    2. réglages (objectif, tailles de verre, affichage) + quantité libre,
    3. remise à zéro quotidienne + historique + liste des verres du jour + série de jours,
    4. rappels + actions dans les notifications,
-   5. son, animation, statistiques et finitions.
+   5. son, animation et finitions.
 3. À chaque étape, expliquer comment tester.
 4. Si un choix technique a plusieurs options valables, me demander plutôt que trancher seul.

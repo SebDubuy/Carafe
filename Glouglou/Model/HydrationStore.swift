@@ -130,41 +130,6 @@ final class HydrationStore: ObservableObject {
         return count
     }
 
-    // MARK: - Statistiques
-
-    /// Moyenne des 7 jours précédents (aujourd'hui exclu, car pas terminé).
-    /// Seuls les jours où au moins un verre a été noté comptent : les jours d'avant
-    /// l'installation ne font pas baisser la moyenne.
-    var weeklyAverage: Int? {
-        let today = calendar.startOfDay(for: now)
-        let totals = (1...7).compactMap { back -> Int? in
-            guard let day = calendar.date(byAdding: .day, value: -back, to: today) else { return nil }
-            let total = entries(on: day).reduce(0) { $0 + $1.milliliters }
-            return total > 0 ? total : nil
-        }
-        guard !totals.isEmpty else { return nil }
-        return totals.reduce(0, +) / totals.count
-    }
-
-    /// Meilleure journée de tout l'historique.
-    var bestDay: DaySummary? {
-        let byDay = Dictionary(grouping: entries) { calendar.startOfDay(for: $0.date) }
-        guard let best = byDay.max(by: { a, b in
-            a.value.reduce(0) { $0 + $1.milliliters } < b.value.reduce(0) { $0 + $1.milliliters }
-        }) else { return nil }
-        return summary(for: best.key)
-    }
-
-    /// Heure de la journée où l'on boit le plus (sur les 30 derniers jours), ex. 10 pour « 10 h – 11 h ».
-    var peakHour: Int? {
-        guard let since = calendar.date(byAdding: .day, value: -30, to: now) else { return nil }
-        var byHour: [Int: Int] = [:]
-        for entry in entries where entry.date >= since && entry.date <= now {
-            byHour[calendar.component(.hour, from: entry.date), default: 0] += entry.milliliters
-        }
-        return byHour.max(by: { $0.value < $1.value || ($0.value == $1.value && $0.key > $1.key) })?.key
-    }
-
     private func summary(for day: Date) -> DaySummary {
         let total = entries(on: day).reduce(0) { $0 + $1.milliliters }
         let isToday = calendar.isDate(day, inSameDayAs: now)
