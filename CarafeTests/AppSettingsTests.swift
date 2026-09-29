@@ -1,5 +1,5 @@
 import XCTest
-@testable import Glouglou
+@testable import Carafe
 
 @MainActor
 final class AppSettingsTests: XCTestCase {
@@ -7,7 +7,7 @@ final class AppSettingsTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        defaults = UserDefaults(suiteName: "GlouglouTests-\(UUID().uuidString)")
+        defaults = UserDefaults(suiteName: "CarafeTests-\(UUID().uuidString)")
     }
 
     func testValeursParDefaut() {

@@ -225,9 +225,9 @@ struct GeneralSettingsView: View {
                         .toggleStyle(.switch)
                 }
                 HStack {
-                    Text("Lancer Glouglou au démarrage")
+                    Text("Lancer Carafe au démarrage")
                     Spacer()
-                    Toggle("Lancer Glouglou au démarrage", isOn: $launchAtLogin)
+                    Toggle("Lancer Carafe au démarrage", isOn: $launchAtLogin)
                         .labelsHidden()
                         .toggleStyle(.switch)
                         .onChange(of: launchAtLogin) { newValue in

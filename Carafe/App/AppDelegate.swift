@@ -30,7 +30,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
 
     // MARK: - UNUserNotificationCenterDelegate
 
-    /// Glouglou vit dans la barre de menus, donc elle est toujours « au premier plan » :
+    /// Carafe vit dans la barre de menus, donc elle est toujours « au premier plan » :
     /// sans ça, macOS n'afficherait pas nos rappels.
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter,
                                             willPresent notification: UNNotification,

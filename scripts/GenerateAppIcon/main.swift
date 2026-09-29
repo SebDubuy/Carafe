@@ -1,9 +1,9 @@
 // Génère l'icône de l'app (toutes les tailles) dans Assets.xcassets/AppIcon.appiconset.
 // Utilisation, depuis la racine du projet :
-//   swiftc -o /tmp/appicon scripts/GenerateAppIcon/main.swift Glouglou/Icon/DropIconRenderer.swift && /tmp/appicon
+//   swiftc -o /tmp/appicon scripts/GenerateAppIcon/main.swift Carafe/Icon/DropIconRenderer.swift && /tmp/appicon
 import AppKit
 
-let output = "Glouglou/Resources/Assets.xcassets/AppIcon.appiconset"
+let output = "Carafe/Resources/Assets.xcassets/AppIcon.appiconset"
 
 /// Dessine l'icône dans un carré de `side` pixels.
 func drawIcon(side: CGFloat) {
@@ -24,7 +24,7 @@ func drawIcon(side: CGFloat) {
     let shine = NSGradient(colors: [NSColor.white.withAlphaComponent(0.22), NSColor.white.withAlphaComponent(0)])!
     shine.draw(in: NSRect(x: 0, y: side * 0.5, width: side, height: side * 0.5), angle: -90)
 
-    // La goutte de Glouglou, blanche, à moitié remplie.
+    // La goutte de Carafe, blanche, à moitié remplie.
     let dropSide = side * 0.68
     let dropRect = NSRect(x: (side - dropSide) / 2, y: (side - dropSide) / 2 - side * 0.01,
                           width: dropSide, height: dropSide)

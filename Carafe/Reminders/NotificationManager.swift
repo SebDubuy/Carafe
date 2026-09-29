@@ -1,14 +1,14 @@
 import AppKit
 import UserNotifications
 
-/// Envoi des notifications Glouglou : autorisation, actions, et un seul identifiant
+/// Envoi des notifications Carafe : autorisation, actions, et un seul identifiant
 /// pour que chaque rappel remplace le précédent au lieu de s'empiler.
 @MainActor
 final class NotificationManager: ObservableObject {
-    static let reminderIdentifier = "glouglou.reminder"
-    static let categoryIdentifier = "glouglou.reminder.category"
-    static let addActionIdentifier = "glouglou.action.add"
-    static let snoozeActionIdentifier = "glouglou.action.snooze"
+    static let reminderIdentifier = "carafe.reminder"
+    static let categoryIdentifier = "carafe.reminder.category"
+    static let addActionIdentifier = "carafe.action.add"
+    static let snoozeActionIdentifier = "carafe.action.snooze"
 
     @Published private(set) var authorization: UNAuthorizationStatus = .notDetermined
 
@@ -50,7 +50,7 @@ final class NotificationManager: ObservableObject {
         center.add(request)
     }
 
-    /// Ouvre Réglages Système › Notifications, pour autoriser Glouglou.
+    /// Ouvre Réglages Système › Notifications, pour autoriser Carafe.
     static func openSystemSettings() {
         if let url = URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension") {
             NSWorkspace.shared.open(url)

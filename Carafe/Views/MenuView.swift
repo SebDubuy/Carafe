@@ -268,7 +268,7 @@ struct MenuView: View {
     }
 }
 
-/// Avertissement discret quand macOS bloque les notifications de Glouglou :
+/// Avertissement discret quand macOS bloque les notifications de Carafe :
 /// sans ça, les rappels partent mais ne s'affichent jamais.
 private struct NotificationsWarning: View {
     @ObservedObject var notifications: NotificationManager
@@ -286,7 +286,7 @@ private struct NotificationsWarning: View {
             }
             .buttonStyle(.borderless)
             .font(.callout)
-            .help(Text("Réglages Système › Notifications › Glouglou"))
+            .help(Text("Réglages Système › Notifications › Carafe"))
         }
     }
 }

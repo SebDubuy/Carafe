@@ -20,7 +20,7 @@ final class SettingsWindowController {
             window.styleMask = [.titled, .closable, .miniaturizable, .fullSizeContentView]
             window.titlebarAppearsTransparent = true
             window.titleVisibility = .hidden
-            window.title = String(localized: "Réglages de Glouglou")
+            window.title = String(localized: "Réglages de Carafe")
             window.isMovableByWindowBackground = true
             window.isReleasedWhenClosed = false
             window.center()

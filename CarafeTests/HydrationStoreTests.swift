@@ -1,5 +1,5 @@
 import XCTest
-@testable import Glouglou
+@testable import Carafe
 
 @MainActor
 final class HydrationStoreTests: XCTestCase {
@@ -8,7 +8,7 @@ final class HydrationStoreTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        defaults = UserDefaults(suiteName: "GlouglouTests-\(UUID().uuidString)")
+        defaults = UserDefaults(suiteName: "CarafeTests-\(UUID().uuidString)")
         currentDate = Date()
     }
 

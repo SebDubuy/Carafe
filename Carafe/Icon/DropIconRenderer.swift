@@ -1,6 +1,6 @@
 import AppKit
 
-/// Dessine l'icône de Glouglou : une goutte d'eau qui se remplit de bleu selon
+/// Dessine l'icône de Carafe : une goutte d'eau qui se remplit de bleu selon
 /// la progression. Contour blanc sur barre sombre, graphite sur barre claire, orange en
 /// alerte : l'image n'est donc pas en mode « template » et ses couleurs sont choisies
 /// à la main selon l'apparence de la barre.
@@ -34,7 +34,7 @@ enum DropIconRenderer {
             return true
         }
         image.isTemplate = false
-        image.accessibilityDescription = String(localized: "Glouglou")
+        image.accessibilityDescription = String(localized: "Carafe")
         cache[key] = image
         return image
     }

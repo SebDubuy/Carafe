@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Couleurs et styles partagés par les vues de Glouglou.
+/// Couleurs et styles partagés par les vues de Carafe.
 /// Apparence standard de macOS (fond, textes, séparateurs du système, sans effet de verre) ;
 /// une seule couleur franche, le bleu du système, pour ce qui se remplit : jauge, goutte,
 /// barres de la semaine.

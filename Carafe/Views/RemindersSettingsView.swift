@@ -27,9 +27,9 @@ struct RemindersSettingsView: View {
 
             if notifications.authorization == .denied {
                 GlassCard {
-                    Label("Les notifications de Glouglou sont désactivées.", systemImage: "bell.slash")
+                    Label("Les notifications de Carafe sont désactivées.", systemImage: "bell.slash")
                         .font(.body.weight(.medium))
-                    Caption("Autorise-les dans Réglages Système › Notifications › Glouglou pour recevoir les rappels.")
+                    Caption("Autorise-les dans Réglages Système › Notifications › Carafe pour recevoir les rappels.")
                     Button("Ouvrir les réglages des notifications") {
                         NotificationManager.openSystemSettings()
                     }
