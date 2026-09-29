@@ -9,6 +9,8 @@ struct MenuView: View {
     @State private var customAmount: Double?
     /// Liste des verres du jour dépliée ou non.
     @State private var showTodayList = false
+    /// Incrémenté quand l'objectif vient d'être atteint : déclenche l'éclaboussure.
+    @State private var splashCount = 0
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -24,6 +26,10 @@ struct MenuView: View {
         }
         .padding(16)
         .frame(width: 300)
+        .overlay(alignment: .top) {
+            SplashView(trigger: splashCount)
+                .padding(.top, 60)
+        }
         .background(GlassBackground().ignoresSafeArea())
     }
 
@@ -153,8 +159,13 @@ struct MenuView: View {
     }
 
     /// Ajoute un verre et joue le petit son si le son est activé.
+    /// Si ce verre fait atteindre l'objectif du jour : éclaboussure !
     private func add(_ milliliters: Int) {
+        let wasReached = store.goalReached
         store.add(milliliters: milliliters)
+        if !wasReached && store.goalReached {
+            splashCount += 1
+        }
         SoundPlayer.playDrinkSound(if: store.settings.soundEnabled)
     }
 
@@ -216,6 +227,7 @@ struct MenuView: View {
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.secondary)
             HistoryBarsView(days: store.history(days: 7))
+            StatsView(store: store)
         }
     }
 
