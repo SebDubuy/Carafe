@@ -43,7 +43,7 @@ enum DropIconRenderer {
     /// système font environ 15 pt de haut sur 18) et légèrement descendue, pour que sa
     /// partie ronde, qui porte le poids visuel, s'aligne sur les icônes voisines.
     private static func menuBarRect(in rect: NSRect) -> NSRect {
-        let scale: CGFloat = 0.86
+        let scale: CGFloat = 0.92
         let side = rect.width * scale
         return NSRect(x: rect.midX - side / 2,
                       y: rect.midY - side / 2 - 0.5,   // y vers le haut : −0,5 pt = plus bas
