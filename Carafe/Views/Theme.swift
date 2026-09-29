@@ -13,6 +13,10 @@ enum Theme {
     static let waterGradient = LinearGradient(colors: [water, water],
                                               startPoint: .leading, endPoint: .trailing)
 
+    /// Fond du menu et des réglages : blanc cassé très clair (#FDFDFD).
+    /// Ces fenêtres restent en apparence claire pour que le texte reste lisible.
+    static let surface = Color(red: 0xFD / 255, green: 0xFD / 255, blue: 0xFD / 255)
+
     /// Rail gris des barres de progression (comme les jauges système).
     static let track = Color.primary.opacity(0.12)
 }

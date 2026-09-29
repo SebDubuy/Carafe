@@ -22,6 +22,7 @@ final class SettingsWindowController {
             window.titleVisibility = .hidden
             window.title = String(localized: "Réglages de Carafe")
             window.isMovableByWindowBackground = true
+            window.appearance = NSAppearance(named: .aqua)   // toujours clair (fond #FDFDFD)
             window.isReleasedWhenClosed = false
             window.center()
             self.window = window

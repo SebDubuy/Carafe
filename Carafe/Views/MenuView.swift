@@ -30,6 +30,8 @@ struct MenuView: View {
             SplashView(trigger: splashCount)
                 .padding(.top, 60)
         }
+        .background(Theme.surface.ignoresSafeArea())
+        .preferredColorScheme(.light)
 
     }
 

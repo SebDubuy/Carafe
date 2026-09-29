@@ -30,7 +30,7 @@ Code propre et découpé en responsabilités claires :
 ### Icône dans la barre de menus
 
 - Une goutte d'eau dessinée en code qui se remplit selon le pourcentage de l'objectif (au moins 8 niveaux : vide → pleine). (Au départ un verre ; remplacé par la goutte pour l'uniformité.)
-- Style : apparence standard de macOS (fond, textes et séparateurs du système, sans effet de verre), fines barres de progression pleines sur rail gris, boutons gris clair. Une seule couleur franche, le bleu du système, pour ce qui se remplit (goutte, jauge, barres de la semaine). Contour de la goutte blanc sur barre sombre, graphite sur barre claire, orange en alerte : l'image n'est donc pas en mode « template ».
+- Style : menu et réglages sur fond blanc cassé #FDFDFD, toujours en apparence claire (textes et contrôles système, sans effet de verre), fines barres de progression pleines sur rail gris, boutons gris clair. Une seule couleur franche, le bleu du système, pour ce qui se remplit (goutte, jauge, barres de la semaine). Contour de la goutte blanc sur barre sombre, graphite sur barre claire, orange en alerte : l'image n'est donc pas en mode « template ».
 - À côté de l'icône, texte optionnel : « 1,2 / 2 L » ou « 60 % » (choix dans les réglages, ou icône seule).
 - Si ça fait longtemps que rien n'a été bu (même délai que le rappel d'inactivité), l'icône passe en état « alerte » (petite goutte ou teinte orange) : rappel discret sans notification.
 

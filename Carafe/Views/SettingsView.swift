@@ -41,7 +41,8 @@ struct SettingsView: View {
             }
         }
         .frame(width: 460, height: 540)
-        .background(Color(nsColor: .windowBackgroundColor).ignoresSafeArea())
+        .background(Theme.surface.ignoresSafeArea())
+        .preferredColorScheme(.light)
     }
 
     private var tabBar: some View {
