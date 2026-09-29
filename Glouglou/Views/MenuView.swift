@@ -53,7 +53,7 @@ struct MenuView: View {
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 Text("\(Formatters.litersValue(store.todayTotal)) L")
                     .font(.system(size: 30, weight: .bold, design: .rounded))
-                    .foregroundStyle(Theme.waterGradient)
+                    .foregroundStyle(.primary)
                 Text("sur \(Formatters.liters(store.goalMilliliters))")
                     .font(.system(.title3, design: .rounded))
                     .foregroundStyle(.secondary)

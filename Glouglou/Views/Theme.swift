@@ -1,19 +1,19 @@
 import SwiftUI
 
-/// Couleurs partagées par les vues de Glouglou : un « gris liquid glass » sobre.
-/// L'eau est blanche et givrée en thème sombre, graphite en thème clair (couleur
-/// primaire du système) ; aucune couleur vive, sauf l'orange de l'alerte.
+/// Couleurs partagées par les vues de Glouglou : palette discrète.
+/// Fond et textes suivent l'apparence normale de macOS ; un seul bleu doux et désaturé
+/// (« bleu brume ») est réservé à ce qui se remplit : jauge, goutte, barres de la semaine.
 enum Theme {
-    /// Eau : couleur primaire du système (blanc en sombre, presque noir en clair).
-    static let water = Color.primary.opacity(0.88)
-    /// Eau plus légère, pour les dégradés et les détails.
-    static let waterLight = Color.primary.opacity(0.55)
+    /// Bleu brume de l'eau.
+    static let water = Color(red: 0.42, green: 0.64, blue: 0.88)
+    /// Bleu brume plus clair, pour les dégradés.
+    static let waterLight = Color(red: 0.62, green: 0.80, blue: 0.95)
 
     static let waterGradient = LinearGradient(colors: [waterLight, water],
                                               startPoint: .leading, endPoint: .trailing)
 
-    /// Couleur des interrupteurs, sélecteurs, etc. : graphite, lisible dans les deux thèmes.
-    static let controlTint = Color(white: 0.55)
+    /// Couleur des interrupteurs, sélecteurs, etc. : le même bleu brume, discret.
+    static let controlTint = water
 
     /// Teinte posée sur le verre du fond : aucune (verre neutre).
     static let glassTint: NSColor? = nil
@@ -71,7 +71,7 @@ struct WaterProgressBar: View {
                 Capsule()
                     .fill(Theme.waterGradient)
                     .frame(width: max(proxy.size.width * min(max(progress, 0), 1), progress > 0 ? 10 : 0))
-                    .shadow(color: Color.primary.opacity(0.25), radius: 3)
+                    .shadow(color: Theme.water.opacity(0.35), radius: 3)
             }
         }
         .frame(height: 10)

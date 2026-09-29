@@ -21,7 +21,7 @@ struct HistoryBarsView: View {
                             .fill(Color.primary.opacity(0.10))
                         Capsule()
                             .fill(day.goalReached ? AnyShapeStyle(Theme.waterGradient)
-                                                  : AnyShapeStyle(Theme.water.opacity(0.6)))
+                                                  : AnyShapeStyle(Theme.water.opacity(0.45)))
                             .frame(height: max(Self.barHeight * day.progress, day.total > 0 ? 4 : 0))
                     }
                     .frame(width: 16, height: Self.barHeight)

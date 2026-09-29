@@ -1,9 +1,9 @@
 import AppKit
 
-/// Dessine l'icône de Glouglou : une goutte d'eau qui se remplit selon la progression.
-/// Monochrome (blanc givré sur barre sombre, graphite sur barre claire), sauf en alerte
-/// où le contour passe à l'orange : l'image n'est donc pas en mode « template » et
-/// ses couleurs sont choisies à la main selon l'apparence de la barre.
+/// Dessine l'icône de Glouglou : une goutte d'eau qui se remplit d'un bleu doux selon
+/// la progression. Contour blanc sur barre sombre, graphite sur barre claire, orange en
+/// alerte : l'image n'est donc pas en mode « template » et ses couleurs sont choisies
+/// à la main selon l'apparence de la barre.
 enum DropIconRenderer {
     /// Nombre de paliers de remplissage (0 = vide, `levels` = plein).
     static let levels = 10
@@ -59,16 +59,19 @@ enum DropIconRenderer {
     /// Orange de l'état « alerte ».
     private static let alertOrange = NSColor(srgbRed: 1.0, green: 0.62, blue: 0.10, alpha: 1)
 
-    /// Dessine la goutte de la barre de menus : eau givrée de la couleur du contour
-    /// (blanc sur barre sombre, graphite sur barre claire), contour orange en alerte.
+    /// Bleu brume de l'eau (le même que `Theme.water`).
+    static let mistWater = NSColor(srgbRed: 0.42, green: 0.64, blue: 0.88, alpha: 1)
+    private static let mistSurface = NSColor(srgbRed: 0.62, green: 0.80, blue: 0.95, alpha: 1)
+
+    /// Dessine la goutte de la barre de menus : eau bleu brume, contour blanc sur barre
+    /// sombre, graphite sur barre claire, orange en alerte.
     static func draw(level: Int, darkMenuBar: Bool, alert: Bool = false, in rect: NSRect) {
         let ink = darkMenuBar ? NSColor.white : NSColor(white: 0.12, alpha: 1)
         draw(level: level,
              lineColor: alert ? alertOrange : ink,
-             waterColor: ink.withAlphaComponent(0.78),
-             // Surface plus claire que l'eau : effet givré.
-             surfaceColor: darkMenuBar ? NSColor.black.withAlphaComponent(0.22) : NSColor.white.withAlphaComponent(0.45),
-             shineColor: darkMenuBar ? NSColor.black.withAlphaComponent(0.35) : NSColor.white.withAlphaComponent(0.8),
+             waterColor: mistWater,
+             surfaceColor: mistSurface,
+             shineColor: NSColor.white.withAlphaComponent(0.75),
              in: rect)
     }
 
